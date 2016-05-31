@@ -21,6 +21,8 @@ Some warnings can be ignored, please see the IBM documentation for more informat
 
 This module includes two defined resource types, `db2::install` and `db2::instance`.  `db2::install` is a defined resource type, and not a class, because it's possible to install multiple versions of DB2 server side by side on the same server, so this module allows for that.
 
+This module has only been tested for DB2 10.5, but should work for earlier versions
+
 ## `db2::install`
 
 ### Usage example

@@ -8,7 +8,7 @@
   "project_page": "https://github.com/crayfishx/puppet-db2",
   "issues_url": "https://github.com/crayfishx/puppet-db2/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 4.11.0 < 5.0.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.11.0 < 5.0.0"},
     {"name":"puppet-archive","version_requirement":">= 0.5.0 < 1.0.0"}
   ],
   "data_provider": null
