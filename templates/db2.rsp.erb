@@ -1,0 +1,113 @@
+** ============================================================================
+**
+** Sample response file for IBM DB2
+** --------------------------------
+** To select features and settings to install, uncomment the corresponding
+** keywords and specify values for those keywords.  You do not need to select
+** features if you select the TYPICAL or COMPACT installation options.
+**
+** Comments are made by placing either an asterisk (*) or a hash symbol (#) at
+** the start of a line, or by placing ** or ## after the start of a line to
+** comment out the rest of that line.
+** All keywords that are currently uncommented (not preceded by * or #) are
+** mandatory and must be assigned values for the installation to continue.
+** All other keywords are optional. If optional keywords are not specified,
+** the installation will proceed using default values. Lines that start out
+** with two asterisks are documentation and should not be enabled.
+**
+** For more information on creating or configuring an ESE instance with the
+** DB2 pureScale Feature, see "Installing the 
+** IBM DB2 pureScale feature for DB2 Server Edition
+** using a response file" in the DB2 Information Center.
+** For more information on configuration parameters, see "Configuring the DB2 database manager with 
+** configuration parameters" in the DB2 Information Center.
+**
+** For more information on DB2 registry and environment variables, and configuration 
+** parameters, see "DB2 registry and environment variables" in the DB2 Information Center.
+**
+** For more information on how to perform a response file installation, see 
+** "Response file considerations" in the DB2 Information Center.
+**
+** Refer to the DB2 Information Center at:
+** http://publib.boulder.ibm.com/infocenter/db2luw/v10r5
+**
+** ============================================================================
+** General Options
+** ---------------
+
+** Only one product can be specified for the following PROD keyword. Specifying
+** multiple products in an installation is not supported.
+PROD                      = <%= @product %>
+
+** The FILE keyword determines the base installation path. If you specify a
+** path that does not yet have this product, this will install a new copy.  If
+** you specify a path that has this product, this will be considered an
+** existing installation intended to install additional functionality.  This is
+** a mandatory keyword for root installation. Remove this keyword for non-root
+** installation. If not removed, its value must be $HOME/sqllib where $HOME
+** represents the HOME directory of the non-root user ID that owns the non-root
+** installation.
+FILE                      = <%= @p_install_dest %>
+
+** Modify the value of the following LIC_AGREEMENT keyword to indicate that you
+** have read and agreed to the license agreement file in the db2/license
+** directory on the CD.
+LIC_AGREEMENT             = ACCEPT         ** ACCEPT or DECLINE
+
+** If an interactive type is set, db2setup will prompt for CD locations and
+** give feedback as to progress, otherwise nothing will be displayed until the
+** installation is complete.
+*INTERACTIVE              = NONE            ** NONE, YES, MACHINE
+INTERACTIVE               = MACHINE         ** NONE, YES, MACHINE
+
+** The PACKAGE_LOCATION keyword is used only when the NLPACK is not available
+** and any national languages are to be installed. This keyword specifies the
+** location of the NLPACK.
+*PACKAGE_LOCATION         =                 ** Any valid path
+
+** The CONFIG_ONLY keyword is used to specify that the response file is being
+** used for creating or configuring an instance, and nothing is to be
+** installed. This keyword must be set to YES if a response file is used with
+** db2isetup.
+*CONFIG_ONLY              =                 ** YES or NO
+
+** INSTALL_TYPE keyword is used to select the installation type. If you specify
+** a TYPICAL or a COMPACT install type, no COMP keywords are required. In this
+** case the installer will select the appropriate components for you.  All COMP
+** keywords are ignored by the installer unless the INSTALL_TYPE is set  to
+** CUSTOM. If you select the CUSTOM install type, then ensure that you enable 
+** all of the COMP keywords that are required for your database environment.
+** 
+** Note: The install type is not related to the language selection.
+** ----------------------------------------------------------------------------
+INSTALL_TYPE              = CUSTOM         ** TYPICAL, COMPACT, CUSTOM
+
+** The following components are part of all TYPICAL installations. If you
+** perform a typical installation, all of these components will be installed on
+** your computer.
+** ----------------------------------------------------------------------------
+
+** DB2 Advanced Copy Services help protect mission-critical data that requires
+** 24x7 availability. It offers an integrated solution designed to implement
+** high-efficiency backup and restore processes and helps eliminate
+** backup-related performance issues.
+
+<% @components.each do |comp| -%>
+COMP                     = <%= comp %>
+<% end -%>
+
+<% @languages.each do |lang| -%>
+LANG                     = <%= lang %>
+<% end -%>
+
+
+** (Valid for non-root upgrade only) Upgrade Older Release
+** -------------------------------------------------------
+** Specify whether you want to upgrade any previous versions of the product. 
+** Specifying this keyword will remove any previous version and upgrade any
+** settings to the new installation.  Be aware that during upgrade of the
+** current copy, only the product specified in the response file will be
+** installed. Other previously installed products need to be upgraded
+** separately following this upgrade.
+*UPGRADE_PRIOR_VERSIONS   = FALSE           ** TRUE or FALSE
+

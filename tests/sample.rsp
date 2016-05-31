@@ -1,0 +1,210 @@
+** ============================================================================
+**
+** Sample response file for IBM DB2
+** --------------------------------
+** To select features and settings to install, uncomment the corresponding
+** keywords and specify values for those keywords.  You do not need to select
+** features if you select the TYPICAL or COMPACT installation options.
+**
+** Comments are made by placing either an asterisk (*) or a hash symbol (#) at
+** the start of a line, or by placing ** or ## after the start of a line to
+** comment out the rest of that line.
+** All keywords that are currently uncommented (not preceded by * or #) are
+** mandatory and must be assigned values for the installation to continue.
+** All other keywords are optional. If optional keywords are not specified,
+** the installation will proceed using default values. Lines that start out
+** with two asterisks are documentation and should not be enabled.
+**
+** For more information on creating or configuring an ESE instance with the
+** DB2 pureScale Feature, see "Installing the 
+** IBM DB2 pureScale feature for DB2 Server Edition
+** using a response file" in the DB2 Information Center.
+** For more information on configuration parameters, see "Configuring the DB2 database manager with 
+** configuration parameters" in the DB2 Information Center.
+**
+** For more information on DB2 registry and environment variables, and configuration 
+** parameters, see "DB2 registry and environment variables" in the DB2 Information Center.
+**
+** For more information on how to perform a response file installation, see 
+** "Response file considerations" in the DB2 Information Center.
+**
+** Refer to the DB2 Information Center at:
+** http://publib.boulder.ibm.com/infocenter/db2luw/v10r5
+**
+** ============================================================================
+** General Options
+** ---------------
+
+** Only one product can be specified for the following PROD keyword. Specifying
+** multiple products in an installation is not supported.
+PROD                      = DB2_SERVER_EDITION
+
+** The FILE keyword determines the base installation path. If you specify a
+** path that does not yet have this product, this will install a new copy.  If
+** you specify a path that has this product, this will be considered an
+** existing installation intended to install additional functionality.  This is
+** a mandatory keyword for root installation. Remove this keyword for non-root
+** installation. If not removed, its value must be $HOME/sqllib where $HOME
+** represents the HOME directory of the non-root user ID that owns the non-root
+** installation.
+FILE                      = /opt/ibm/db2/V10.5
+
+** Modify the value of the following LIC_AGREEMENT keyword to indicate that you
+** have read and agreed to the license agreement file in the db2/license
+** directory on the CD.
+LIC_AGREEMENT             = ACCEPT         ** ACCEPT or DECLINE
+
+** If an interactive type is set, db2setup will prompt for CD locations and
+** give feedback as to progress, otherwise nothing will be displayed until the
+** installation is complete.
+*INTERACTIVE              = NONE            ** NONE, YES, MACHINE
+INTERACTIVE               = MACHINE         ** NONE, YES, MACHINE
+
+** The PACKAGE_LOCATION keyword is used only when the NLPACK is not available
+** and any national languages are to be installed. This keyword specifies the
+** location of the NLPACK.
+*PACKAGE_LOCATION         =                 ** Any valid path
+
+** The CONFIG_ONLY keyword is used to specify that the response file is being
+** used for creating or configuring an instance, and nothing is to be
+** installed. This keyword must be set to YES if a response file is used with
+** db2isetup.
+*CONFIG_ONLY              =                 ** YES or NO
+
+** INSTALL_TYPE keyword is used to select the installation type. If you specify
+** a TYPICAL or a COMPACT install type, no COMP keywords are required. In this
+** case the installer will select the appropriate components for you.  All COMP
+** keywords are ignored by the installer unless the INSTALL_TYPE is set  to
+** CUSTOM. If you select the CUSTOM install type, then ensure that you enable 
+** all of the COMP keywords that are required for your database environment.
+** 
+** Note: The install type is not related to the language selection.
+** ----------------------------------------------------------------------------
+INSTALL_TYPE              = CUSTOM         ** TYPICAL, COMPACT, CUSTOM
+
+** The following components are part of all TYPICAL installations. If you
+** perform a typical installation, all of these components will be installed on
+** your computer.
+** ----------------------------------------------------------------------------
+
+** DB2 Advanced Copy Services help protect mission-critical data that requires
+** 24x7 availability. It offers an integrated solution designed to implement
+** high-efficiency backup and restore processes and helps eliminate
+** backup-related performance issues.
+COMP                     = ACS                                 ** Integrated Flash Copy Support
+
+** Provides federated support required to access DB2 for iSeries and DB2 for
+** z/OS and OS/390 data sources.
+*COMP                     = DB2_DATA_SOURCE_SUPPORT             ** DB2 data source support
+
+** Sample database source provides sample data and metadata that allows you to
+** create a sample database using the First Steps application.
+COMP                     = DB2_SAMPLE_DATABASE                 ** Sample database source
+
+** DB2 Update Service is a web tool that lists the available DB2 product
+** updates, and provides details about product updates.  The DB2 Update Service
+** requires an internet connection.
+*COMP                     = DB2_UPDATE_SERVICE                  ** DB2 Update Service
+
+** First Steps is a graphical tool that will help familiarize you with DB2
+** features and functions.
+*COMP                     = FIRST_STEPS                         ** First Steps
+
+** Guardium Installation Manager Client component will place the Guardium
+** Installation Manager(GIM) Client under DB2 Install Path.
+*COMP                     = GUARDIUM_INST_MNGR_CLIENT           ** Guardium Installation Manager Client
+
+** The DB2 Instance Setup wizard is a Java-based tool you can use to set up
+** instances on your computer after installing DB2.
+*COMP                     = INSTANCE_SETUP_SUPPORT              ** DB2 Instance Setup wizard
+
+** LDAP Exploitation allows DB2 to use an LDAP directory to store database
+** directory and configuration information.
+COMP                     = LDAP_EXPLOITATION                   ** DB2 LDAP support
+
+** IBM Tivoli System Automation for Multiplatforms provides high availability
+** and disaster recovery capabilities for AIX, Linux, Solaris SPARC, and
+** Windows.
+** If this component is selected, it will either be installed, updated or
+** upgraded by the DB2 installer. Use COMP=TSAMP only if you are running as
+** root user.
+*COMP                     = TSAMP                               ** Tivoli SA MP
+
+
+** The following components are not part of TYPICAL installations, and thus can
+** only be installed through CUSTOM installs.
+** ----------------------------------------------------------------------------
+
+** The base application development tools component contains tools and files
+** (including header files, libraries, and a precompiler) that are needed for
+** developing applications that work with DB2.
+COMP                     = APPLICATION_DEVELOPMENT_TOOLS       ** Base application development tools
+
+** A scalable, highly-available, high performance file system optimized for
+** multi-petabyte storage management.
+** If this component is selected, it will either be installed, updated or
+** upgraded by the DB2 installer.  Use COMP=GPFS only if you are running as
+** root user.
+*COMP                     = GPFS                                ** General Parallel File System (GPFS)
+
+** Enables users and applications to submit distributed requests for data
+** managed by Informix systems.
+** This feature is only installed and not configured when the PURESCALE feature
+** is selected for installation.
+*COMP                     = INFORMIX_DATA_SOURCE_SUPPORT        ** Informix data source support
+
+** Enables users and applications to submit distributed requests for data
+** managed by Oracle systems.
+*COMP                     = ORACLE_DATA_SOURCE_SUPPORT          ** Oracle data source support
+
+** The IBM DB2 pureScale Feature provides clustering technology to DB2 products
+** on distributed platforms.
+** Selecting the PURESCALE feature will automatically install every other
+** required component. See the DB2 Information Center for more information on
+** the pre-installation planning and prerequisites needed for a successful IBM
+** DB2 pureScale installation and instance setup. Use COMP=PURESCALE only if
+** you are running as root user.
+*COMP                     = PURESCALE                           ** IBM DB2 pureScale Feature
+
+** Spatial Extender client contains the support required for communicating with
+** a Spatial Extender server.
+*COMP                     = SPATIAL_EXTENDER_CLIENT_SUPPORT     ** Spatial Extender client
+
+** Provides Spatial Extender support for the DB2 server, providing the storing
+** and query of geographical information in DB2 tables.
+*COMP                     = SPATIAL_EXTENDER_SERVER_SUPPORT     ** Spatial Extender server support
+
+** The DB2 Text Search component, powered by OmniFind, delivers an integrated,
+** high quality and scalable search technology in DB2 databases.
+** This feature is only installed and not configured when the PURESCALE feature
+** is selected for installation.
+*COMP                     = TEXT_SEARCH                         ** DB2 Text Search
+
+** The following languages apply to all translated components. Enable the
+** language(s) you want installed. If you do not enable any language keywords,
+** then the English language (EN) will still be installed by default.
+** ---------------------------------------------------------------------------
+*LANG                     = BR              ** Portuguese - Brazil (pt_BR)
+*LANG                     = CN              ** Simplified Chinese (zh_CN)
+*LANG                     = CZ              ** Czech (cs_CZ)
+*LANG                     = DE              ** German (de_DE)
+*LANG                     = ES              ** Spanish (es_ES)
+*LANG                     = FR              ** French (fr_FR)
+*LANG                     = IT              ** Italian (it_IT)
+*LANG                     = JP              ** Japanese (ja_JP)
+*LANG                     = KR              ** Korean (ko_KR)
+*LANG                     = PL              ** Polish (pl_PL)
+*LANG                     = RU              ** Russian (ru_RU)
+*LANG                     = TW              ** Traditional Chinese (zh_TW)
+
+
+** (Valid for non-root upgrade only) Upgrade Older Release
+** -------------------------------------------------------
+** Specify whether you want to upgrade any previous versions of the product. 
+** Specifying this keyword will remove any previous version and upgrade any
+** settings to the new installation.  Be aware that during upgrade of the
+** current copy, only the product specified in the response file will be
+** installed. Other previously installed products need to be upgraded
+** separately following this upgrade.
+*UPGRADE_PRIOR_VERSIONS   = FALSE           ** TRUE or FALSE
+
