@@ -7,7 +7,7 @@ This module configures DB2 server installations and configures instances.
 
 # Pre-requisistes
 
-The DB2 software package ships as an tarball and should be placed either in a Puppet file location, HTTP server or other source location compatible with the `archive` type from `puppet/archive`.   For testing, the 90 day trial of DB2 can be downloaded from (The IBM website)[https://www-01.ibm.com/software/data/db2/linux-unix-windows/downloads.html]
+The DB2 software package ships as an tarball and should be placed either in a Puppet file location, HTTP server or other source location compatible with the `archive` type from `puppet/archive`.   For testing, the 90 day trial of DB2 can be downloaded from [The IBM DB2 download center](https://www-01.ibm.com/software/data/db2/linux-unix-windows/downloads.html)
 
 Numerous packages and other settings are required in order to support DB2 server, it is recommended that you run the pre-check script from DB2 on the system that you intend to deploy this module to and update your roles/profiles with the relevant pre-reqs for your system.  The script can be found in the source tarball and can be run as
 
