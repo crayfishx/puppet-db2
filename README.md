@@ -133,5 +133,9 @@ db2::instances
 In order to use the boot the vagrant box and set up a DB2 instance to test with, you should first obtain the 90 day trial from IBM's website and place the `v10.5_linuxx64_server_t.tar.gz` in the root directory of this repo.  Then run `vagrant up`.  The provisioner will set up some pre-reqs and run the code from `tests/vagrant.pp`.  It should install DB2, configure an instance, add a sample database using the `SAMPLE_DATABASE` component and connect to it.
 
 
+# Author
+
+* Written and maintained by Craig Dunn <craig@craigdunn.org> @crayfisx
+* Sponsered by Baloise Group [http://baloise.github.io](http://baloise.github.io)
 
 
