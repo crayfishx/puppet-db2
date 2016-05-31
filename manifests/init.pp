@@ -12,6 +12,7 @@
 class db2 (
   $installations = {},
   $instances     = {},
+  $workspace     = '/var/puppet_db2',
 ) {
 
   file { $workspace:

@@ -8,7 +8,7 @@ define db2::install (
   $extract = true,
   $source  = undef,
   $filename = undef,
-  $installer_root    = '/var/puppet_db2',
+  $installer_root    = $::db2::workspace,
   $installer_folder  = 'server_t',
   $install_dest      = undef,
   $product           = 'DB2_SERVER_EDITION',
