@@ -59,7 +59,7 @@ db2::install { '10.5':
 * `configure_license`: Whether or not to configure the license
 * `license_content`: The license content as a string
 
-## db2::instance
+## `db2::instance`
 
 ### Usage example
 
@@ -86,7 +86,7 @@ db2::install { '10.5':
 * `type`: Type of product this instance is for (default: ese)
 * `auth`: Type of auth for this instance (default: server)
 
-## db2
+## `db2`
 
 The db2 base class takes `installations` and `instances` as parameters and farms these to `create_reosurces` to dynamically create DB2 installs and instances from Hiera data.
 
