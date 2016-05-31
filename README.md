@@ -25,7 +25,7 @@ This module includes two defined resource types, `db2::install` and `db2::instan
 
 ### Usage example
 
-```
+```puppet
 db2::install { '10.5':
   source     => 'http://content.enviatics.com/v10.5_linuxx64_server.tar.gz',
   components => [
@@ -39,6 +39,7 @@ db2::install { '10.5':
     'COMMUNICATION_SUPPORT_TCPIP'
   ],
   license_content => template('db2/license/trial.lic'),
+}
 ```
 
 ### Parameters
