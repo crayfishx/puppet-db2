@@ -49,7 +49,7 @@ define db2::install (
       default   => $filename,
     }
   
-    archive { "${installer_root}/${p_filename}": 
+    archive { "${installer_root}/${p_filename}":
       ensure       => present,
       extract      => true,
       source       => $source,
@@ -65,7 +65,7 @@ define db2::install (
   }
 
   exec { "db2::install::${name}":
-    path    => "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin",
+    path    => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
     command => "${binpath}/db2setup -r ${responsefile}",
     require => File[$responsefile],
     creates => $p_install_dest,
@@ -73,7 +73,7 @@ define db2::install (
 
   if $configure_license {
     if !$license_content {
-      fail("Must provide license_content")
+      fail('Must provide license_content')
     }
     file { "${p_install_dest}/license/custom_${name}.lic":
       ensure  => file,
@@ -82,7 +82,7 @@ define db2::install (
     }
 
     exec { "db2::install::license ${name}":
-      path        => "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin",
+      path        => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
       command     => "${p_install_dest}/adm/db2licm -a ${p_install_dest}/license/custom_${name}.lic",
       refreshonly => true,
       subscribe   => File["${p_install_dest}/license/custom_${name}.lic"],

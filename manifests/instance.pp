@@ -1,3 +1,7 @@
+# Defined type: db2::instance
+#
+# Set up a DB2 instance
+#
 define db2::instance (
   $fence_user,
   $installation_root,
@@ -36,7 +40,7 @@ define db2::instance (
   }
 
   exec { "db2::instance::${name}":
-    path    => "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin",
+    path    => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
     command => "${installation_root}/instance/db2icrt -s ${type} -a ${auth} -u ${fence_user} ${instance_user}",
     unless  => "${installation_root}/instance/db2ilist ${instance_user}"
   }
