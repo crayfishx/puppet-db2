@@ -16,6 +16,7 @@ define db2::install (
   $languages         = ['EN'],
   $configure_license = true,
   $license_content   = undef,
+  $license_source    = undef,
 ) {
 
   # Set up file locations
@@ -72,12 +73,18 @@ define db2::install (
   }
 
   if $configure_license {
-    if !$license_content {
-      fail('Must provide license_content')
+
+    if !$license_content and !$license_source {
+      fail('Must provide license_content or license_content')
     }
+    if $license_content and $license_source {
+      fail('Must provide only one of license_content or license_content')
+    }
+
     file { "${p_install_dest}/license/custom_${name}.lic":
       ensure  => file,
       content => $license_content,
+      source  => $license_source,
       require => Exec["db2::install::${name}"],
     }
 

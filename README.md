@@ -57,7 +57,8 @@ db2::install { '10.5':
 * `components`: An array of components to install
 * `languages`: An array of languages to install (default: [ 'EN' ])
 * `configure_license`: Whether or not to configure the license
-* `license_content`: The license content as a string
+* `license_content`: The license content as a string (cannot use with license_source)
+* `license_source`: The source of the license as a file source parameter (cannot use with license_content)
 
 ## `db2::instance`
 
