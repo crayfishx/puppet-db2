@@ -9,7 +9,7 @@ define db2::install (
   $source  = undef,
   $filename = undef,
   $installer_root    = $::db2::workspace,
-  $installer_folder  = 'server_t',
+  $installer_folder  = 'universal',
   $install_dest      = undef,
   $product           = 'DB2_SERVER_EDITION',
   $components        = [],
