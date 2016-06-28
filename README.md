@@ -136,7 +136,7 @@ In order to use the boot the vagrant box and set up a DB2 instance to test with,
 
 # Author
 
-* Written and maintained by Craig Dunn <craig@craigdunn.org> @crayfisx
+* Written and maintained by Craig Dunn <craig@craigdunn.org> @crayfishx
 * Sponsered by Baloise Group [http://baloise.github.io](http://baloise.github.io)
 
 
