@@ -24,6 +24,7 @@ db2::install { '10.5':
 db2::instance { 'db2inst1':
   fence_user        => 'db2fenc1',
   installation_root => '/opt/ibm/db2/V10.5',
+  installer_folder  => 'server_t',
   require           => Db2::Install['10.5'],
 }
 
