@@ -14,6 +14,7 @@ define db2::instance (
   $instance_user_uid    = undef,
   $instance_user_gid    = undef,
   $instance_user_home   = undef,
+  $users_forcelocal     = undef,
   $type                 = 'ese',
   $auth                 = 'server',
 ) {
@@ -24,6 +25,7 @@ define db2::instance (
       uid        => $fence_user_uid,
       gid        => $fence_user_gid,
       home       => $fence_user_home,
+      forcelocal => $users_forcelocal,
       managehome => true,
       before     => Exec["db2::instance::${name}"],
     }
@@ -34,6 +36,7 @@ define db2::instance (
       uid        => $instance_user_uid,
       gid        => $instance_user_gid,
       home       => $instance_user_home,
+      forcelocal => $users_forcelocal,
       managehome => true,
       before     => Exec["db2::instance::${name}"],
     }
