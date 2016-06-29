@@ -75,10 +75,10 @@ define db2::install (
   if $configure_license {
 
     if !$license_content and !$license_source {
-      fail('Must provide license_content or license_content')
+      fail('Must provide license_content or license_source')
     }
     if $license_content and $license_source {
-      fail('Must provide only one of license_content or license_content')
+      fail('Must provide only one of license_content or license_source')
     }
 
     file { "${p_install_dest}/license/custom_${name}.lic":
