@@ -1,3 +1,7 @@
+#### 0.3.1
+
+* Issue #1 : Add ability to specify forcelocal for user creation
+
 ### 0.3.0
 
 * BREAK: More sensible default for install_folder in db2::install, now uses universal instead of server_t
