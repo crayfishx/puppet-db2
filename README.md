@@ -86,6 +86,7 @@ db2::install { '10.5':
 * `instance_user_home`: Home directory of the instance user
 * `type`: Type of product this instance is for (default: ese)
 * `auth`: Type of auth for this instance (default: server)
+* `users_forcelocal`: Force the creation of instance and fence users to be local
 
 ## `db2`
 
