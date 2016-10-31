@@ -3,11 +3,11 @@ Puppet DB2 module
 
 # Introduction 
 
-This module configures DB2 server installations and configures instances.
+This module configures DB2 server and runtime client installations and configures instances.
 
 # Pre-requisistes
 
-The DB2 software package ships as an tarball and should be placed either in a Puppet file location, HTTP server or other source location compatible with the `archive` type from `puppet/archive`.   For testing, the 90 day trial of DB2 can be downloaded from [The IBM DB2 download center](https://www-01.ibm.com/software/data/db2/linux-unix-windows/downloads.html)
+The DB2 software package ships as an tarball and should be placed either in a Puppet file location, HTTP server or other source location compatible with the `archive` type from `puppet/archive`.   For testing, the 90 day trial of DB2 server can be downloaded from [The IBM DB2 download center](https://www-01.ibm.com/software/data/db2/linux-unix-windows/downloads.html)
 
 Numerous packages and other settings are required in order to support DB2 server, it is recommended that you run the pre-check script from DB2 on the system that you intend to deploy this module to and update your roles/profiles with the relevant pre-reqs for your system.  The script can be found in the source tarball and can be run as
 
@@ -25,7 +25,7 @@ This module has only been tested for DB2 10.5, but should work for earlier versi
 
 ## `db2::install`
 
-### Usage example
+### Usage example for DB2 Server
 
 ```puppet
 db2::install { '10.5':
@@ -39,6 +39,20 @@ db2::install { '10.5':
     'JAVA_SUPPORT',
     'SQL_PROCEDURES',
     'COMMUNICATION_SUPPORT_TCPIP'
+  ],
+  license_content => template('db2/license/trial.lic'),
+}
+```
+
+### Usage example for DB2 Runtime client
+
+```puppet
+db2::install { '11.1':
+  source     => 'http://content.enviatics.com/ibm_data_server_runtime_client_linuxx64_v11.1.tar.gz',
+  product    => 'RUNTIME_CLIENT',
+  components => [
+    'JAVA_SUPPORT',
+    'BASE_CLIENT'
   ],
   license_content => template('db2/license/trial.lic'),
 }
@@ -62,8 +76,7 @@ db2::install { '10.5':
 
 ## `db2::instance`
 
-### Usage example
-
+### Usage example for a DB2 server instance
 ```puppet
   db2::instance { 'db2inst1':
     fence_user        => 'db2fenc1',
@@ -72,9 +85,18 @@ db2::install { '10.5':
   }
 ```
 
+### Usage example for a DB2 Runtime Client instance
+```puppet
+  db2::instance { 'db2inst1':
+    installation_root => '/opt/ibm/db2/V11.1',
+    type              => 'client',
+    require           => Db2::Install['11.1'],
+  }
+```
+
 ### Parameters
 * `instance_user`: The username for the instance (defaults to resource title)
-* `fence_user`: The username of the fence user
+* `fence_user`: The username of the fence user (optional, must be specified for a non-client instance)
 * `installation_root`: The root of the DB2 installation for this instance
 * `manage_fence_user`: Whether or not to manage the fence user resource (default: true)
 * `fence_user_uid`: UID of the fence user
@@ -87,6 +109,7 @@ db2::install { '10.5':
 * `type`: Type of product this instance is for (default: ese)
 * `auth`: Type of auth for this instance (default: server)
 * `users_forcelocal`: Force the creation of instance and fence users to be local, true or false. (default: undef)
+* `port`: Optionally specify a port name for the instance (default: undef)
 
 ## `db2`
 
@@ -98,7 +121,7 @@ The db2 base class takes `installations` and `instances` as parameters and farms
 include db2
 ```
 
-### Hiera example
+### Hiera example for DB2 Server Installations
 ```yaml
 db2::installations:
   '10.5':
@@ -126,6 +149,32 @@ db2::instances
   db2inst1:
     fence_user: db2fenc1
     installation_root: /opt/ibm/db2/V10.5'
+```
+
+### Hiera example for DB2 Runtime Client installations
+```yaml
+db2::installations:
+  '11.1':
+     source:  'http://content.enviatics.com/ibm_data_server_runtime_client_linuxx64_v11.1.tar.gz
+     product: RUNTIME_CLIENT
+     components:
+      - 'BASE_CLIENT'
+      - 'JAVA_SUPPORT'
+    license_content: |
+      [LicenseCertificate]
+      CheckSum=8085A37377DB3B127EA410B11BB041AF
+      TimeStamp=1356705072
+      PasswordVersion=5
+      VendorName=IBM Toronto Lab
+      ...etc
+```
+
+```yaml
+db2::instances
+  db2inst1:
+    type: client
+    instance_user_uid: 10111
+    installation_root: /opt/ibm/db2/V11.1'
 ```
 
 # Testing
