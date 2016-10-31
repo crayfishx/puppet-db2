@@ -28,12 +28,13 @@ define db2::install (
   case $product {
     'DB2_SERVER_EDITION': {
       $default_filename = "v${version}_linux64_expc.tar.gz"
-      $default_installer_folder = "universal"
+      $default_installer_folder = 'universal'
     }
     'RUNTIME_CLIENT': {
       $default_filename = "ibm_data_server_runtime_client_linuxx64_v${version}.tar.gz"
-      $default_installer_folder = "rtcl"
+      $default_installer_folder = 'rtcl'
     }
+    default: {}
   }
 
   # Set the p_installer_folder variable.  This refers to the folder
@@ -45,7 +46,7 @@ define db2::install (
   }
 
   if (!$p_installer_folder) {
-    fail("Unable to determine the installer folder in the archive for $product, please specify installer_folder in the instance")
+    fail("Unable to determine the installer folder in the archive for ${product}, please specify installer_folder in the instance")
   }
 
   $p_install_dest = $install_dest ? {
@@ -82,9 +83,9 @@ define db2::install (
     }
 
     if ( !$p_filename ) {
-      fail ("Unable to determine default filename for $product, please supply a filename to the instance")
+      fail ("Unable to determine default filename for ${product}, please supply a filename to the instance")
     }
-  
+
     archive { "${installer_root}/${p_filename}":
       ensure       => present,
       extract      => true,

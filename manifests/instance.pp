@@ -54,14 +54,14 @@ define db2::instance (
   if ( $port ) {
     $port_flag = "-p ${port}"
   } else {
-    $port_flag = ""
+    $port_flag = ''
   }
 
 
   exec { "db2::instance::${name}":
     path    => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
     command => "${installation_root}/instance/db2icrt -s ${type} -a ${auth} ${fence_user_flag} ${port_flag} ${instance_user}",
-    unless  => "${installation_root}/instance/db2ilist ${instance_user}"
+    unless  => "${installation_root}/instance/db2ilist ${instance_user}",
   }
 }
 
