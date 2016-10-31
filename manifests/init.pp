@@ -15,9 +15,7 @@ class db2 (
   $workspace     = '/var/puppet_db2',
 ) {
 
-  file { $workspace:
-    ensure => directory,
-  }
+  ensure_resource("file", $workspace, { "ensure" => "directory" })
 
   create_resources('db2::install', $installations)
   create_resources('db2::instance', $instances)

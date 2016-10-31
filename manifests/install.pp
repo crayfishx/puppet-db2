@@ -9,7 +9,7 @@ define db2::install (
   $source  = undef,
   $filename = undef,
   $installer_root    = $::db2::workspace,
-  $installer_folder  = 'universal',
+  $installer_folder  = undef,
   $install_dest      = undef,
   $product           = 'DB2_SERVER_EDITION',
   $components        = [],
@@ -21,18 +21,50 @@ define db2::install (
 
   # Set up file locations
 
+  # Based on the product we try and set some sensible defaults for 
+  # filenames and folders, these can be overriden using the 
+  # filename and installer_folder attributes to this define
+  #
+  case $product {
+    'DB2_SERVER_EDITION': {
+      $default_filename = "v${version}_linux64_expc.tar.gz"
+      $default_installer_folder = "universal"
+    }
+    'RUNTIME_CLIENT': {
+      $default_filename = "ibm_data_server_runtime_client_linuxx64_v${version}.tar.gz"
+      $default_installer_folder = "rtcl"
+    }
+  }
+
+  # Set the p_installer_folder variable.  This refers to the folder
+  # within the installation archive that contains the software
+  # to be installed.
+  $p_installer_folder = $installer_folder ? {
+    undef   => $default_installer_folder,
+    default => $installer_folder,
+  }
+
+  if (!$p_installer_folder) {
+    fail("Unable to determine the installer folder in the archive for $product, please specify installer_folder in the instance")
+  }
+
   $p_install_dest = $install_dest ? {
     undef   => "/opt/ibm/db2/V${version}",
     default => $install_dest
   }
 
-  $binpath="${installer_root}/${installer_folder}"
+  # Binpath refers to the location of the db2setup executable and 
+  # is set relative to the installer_root and p_installer_folder
+  # above
+  $binpath="${installer_root}/${p_installer_folder}"
+
+  # The response file is used by db2setup to determine the type
+  # of installation
   $responsefile="${installer_root}/${name}.rsp"
 
 
   # Validate paths and filenames
   #
-
   validate_absolute_path($installer_root)
   validate_absolute_path($binpath)
   validate_absolute_path($responsefile)
@@ -41,13 +73,16 @@ define db2::install (
   # Extraction of tarball, if $extract is true
   #
   if $extract {
-
     $p_filename = $filename ? {
       undef     => $source ? {
-        undef   => "v${version}_linux64_expc.tar.gz",
+        undef   => $default_filename,
         default => regsubst($source, '.*\/', '')
       },
       default   => $filename,
+    }
+
+    if ( !$p_filename ) {
+      fail ("Unable to determine default filename for $product, please supply a filename to the instance")
     }
   
     archive { "${installer_root}/${p_filename}":
@@ -95,10 +130,4 @@ define db2::install (
       subscribe   => File["${p_install_dest}/license/custom_${name}.lic"],
     }
   }
-      
 }
-
-
-
-
-  
