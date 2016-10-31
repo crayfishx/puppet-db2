@@ -1,3 +1,9 @@
+# 1.0.0
+
+* Issue #4 : Added 'port' parameter to `db2::instance`
+* DB2 runtime installations and instances now supported (see docs)
+
+
 #### 0.3.1
 
 * Issue #1 : Add ability to specify forcelocal for user creation

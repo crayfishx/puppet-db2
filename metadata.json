@@ -1,9 +1,10 @@
 {
   "name": "crayfishx/db2",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "author": "crayfishx",
-  "summary": "Manage DB2 server installation and instances",
+  "summary": "Manage DB2 server and client installation and instances",
   "license": "Apache-2.0",
+  "tags": [ "db2", "db2 server", "ibm", "ibm data server" ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
