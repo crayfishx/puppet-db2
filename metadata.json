@@ -1,6 +1,6 @@
 {
   "name": "crayfishx/db2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "crayfishx",
   "summary": "Manage DB2 server and client installation and instances",
   "license": "Apache-2.0",

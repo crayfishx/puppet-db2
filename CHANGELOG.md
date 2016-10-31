@@ -1,3 +1,7 @@
+# 1.0.1
+
+* Forge code quality (lint) release
+
 # 1.0.0
 
 * Issue #4 : Added 'port' parameter to `db2::instance`
