@@ -54,7 +54,7 @@ db2::install { '11.1':
     'JAVA_SUPPORT',
     'BASE_CLIENT'
   ],
-  license_content => template('db2/license/trial.lic'),
+  configure_license => false,
 }
 ```
 
@@ -158,15 +158,9 @@ db2::installations:
      source:  'http://content.enviatics.com/ibm_data_server_runtime_client_linuxx64_v11.1.tar.gz
      product: RUNTIME_CLIENT
      components:
-      - 'BASE_CLIENT'
-      - 'JAVA_SUPPORT'
-    license_content: |
-      [LicenseCertificate]
-      CheckSum=8085A37377DB3B127EA410B11BB041AF
-      TimeStamp=1356705072
-      PasswordVersion=5
-      VendorName=IBM Toronto Lab
-      ...etc
+       - 'BASE_CLIENT'
+       - 'JAVA_SUPPORT'
+     configure_license: false
 ```
 
 ```yaml
