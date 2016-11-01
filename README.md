@@ -167,7 +167,7 @@ db2::installations:
 ```
 
 ```yaml
-db2::instances
+db2::instances:
   db2inst1:
     type: client
     instance_user_uid: 10111
