@@ -1,0 +1,11 @@
+---
+fixtures:
+  forge_modules:
+    stdlib:
+      repo: puppetlabs/stdlib
+      ref: 4.12.0
+    archive:
+      repo: puppet/archive
+  symlinks:
+    db2: "#{source_dir}"
+

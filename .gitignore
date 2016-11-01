@@ -3,4 +3,6 @@ ibm_data_server_runtime_client_linuxx64_v11.1.tar.gz
 vagrant
 .vagrant
 pkg/
+spec/fixtures/modules
+Gemfile.lock
 
