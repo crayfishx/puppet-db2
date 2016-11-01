@@ -127,16 +127,17 @@ include db2
 ```yaml
 db2::installations:
   '10.5':
-     source:  'http://content.enviatics.com/v10.5_linuxx64_server.tar.gz',
-     components:
-      - 'ACS'
-      - 'APPLICATION_DEVELOPMENT_TOOLS'
-      - 'DB2_SAMPLE_DATABASE   '
-      - 'BASE_CLIENT'
-      - 'BASE_DB2_ENGINE'
-      - 'JAVA_SUPPORT'
-      - 'SQL_PROCEDURES'
-      - 'COMMUNICATION_SUPPORT_TCPIP'
+    source:  'http://content.enviatics.com/v10.5_linuxx64_server.tar.gz'
+    components:
+      - ACS
+      - APPLICATION_DEVELOPMENT_TOOLS
+      - DB2_SAMPLE_DATABASE
+      - BASE_CLIENT
+      - BASE_DB2_ENGINE
+      - JAVA_SUPPORT
+      - SQL_PROCEDURES
+      - COMMUNICATION_SUPPORT_TCPIP
+
     license_content: |
       [LicenseCertificate]
       CheckSum=8085A37377DB3B127EA410B11BB041AF
@@ -150,19 +151,19 @@ db2::installations:
 db2::instances
   db2inst1:
     fence_user: db2fenc1
-    installation_root: /opt/ibm/db2/V10.5'
+    installation_root: /opt/ibm/db2/V10.5
 ```
 
 ### Hiera example for DB2 Runtime Client installations
 ```yaml
 db2::installations:
   '11.1':
-     source:  'http://content.enviatics.com/ibm_data_server_runtime_client_linuxx64_v11.1.tar.gz
-     product: RUNTIME_CLIENT
-     components:
-       - 'BASE_CLIENT'
-       - 'JAVA_SUPPORT'
-     configure_license: false
+    source:  http://content.enviatics.com/ibm_data_server_runtime_client_linuxx64_v11.1.tar.gz
+    product: RUNTIME_CLIENT
+    components:
+      - BASE_CLIENT
+      - JAVA_SUPPORT
+    configure_license: false
 ```
 
 ```yaml
@@ -170,7 +171,7 @@ db2::instances
   db2inst1:
     type: client
     instance_user_uid: 10111
-    installation_root: /opt/ibm/db2/V11.1'
+    installation_root: /opt/ibm/db2/V11.1
 ```
 
 # Testing
