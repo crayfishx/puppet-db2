@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/crayfishx/puppet-db2.svg?branch=unit_testing)](https://travis-ci.org/crayfishx/puppet-db2)
+
 Puppet DB2 module
 -----------------
 
