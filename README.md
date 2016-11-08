@@ -128,6 +128,10 @@ db2::install { '11.1':
 * `auth`: Type of auth for this instance (default: server)
 * `users_forcelocal`: Force the creation of instance and fence users to be local, true or false. (default: undef)
 * `port`: Optionally specify a port name for the instance (default: undef)
+* `catalog_databases`: A hash of `[db2_catalog_database](#db2_catalog_database)` resources to pass to create_resources
+* `catalog_nodes`: A hash of `[db2_catalog_node](#db2_catalog_node)` resources to pass to create_resources
+* `catalog_dcs`: A hash of `[db2_catalog_node](#db2_catalog_node)` resources to pass to create_resources
+
 
 ## `db2`
 
