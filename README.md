@@ -173,6 +173,140 @@ db2::instances:
     instance_user_uid: 10111
     installation_root: /opt/ibm/db2/V11.1
 ```
+# Types and Providers
+
+## `db2_instance`
+
+Configures a DB2 instance.   The instance user must already exist (the `db2::instance` defined type does this for you).  
+
+### Example usage
+
+```puppet
+db2_instance { 'db2inst1':
+  install_root => '/opt/ibm/db2/V11.1',
+  type => client,
+  fence_user => 'db2fence1',
+  auth => 'server',
+}
+```
+  
+### Parameters
+
+* `install_root`: Path to the root of the DB2 installation (required)
+* `auth`: Authentication type (eg: server) (required)
+* `type`: Type of instance (eg: ese, client) (required)
+* `fence_user`: The name of the fence user (must already exist with a valid homedir)
+* `port`: The port name of the instance
+
+The instance user and fence user will be autorequired by this type, but they must exist already or be in the catalog if calling this type directly.
+
+## `db2_catalog_node`
+
+The `db2_catalog_node` resource type manages the catalog entries for nodes on DB2 instances
+
+### Example usage
+
+```puppet
+db2_catalog_node { 'db2node1':
+  type => 'tcpip',
+  remote => 'db2server.example.com',
+  server => 'db2srv',
+  security => 'ssl',
+}
+```
+
+## Parameters
+
+* `install_root`: Path to the root of the DB2 installation (required)
+* `instance`: The name of the instance to configure (required)
+* `type`: The type of node, currently supported are `tcpip` and `local`
+* `to_instance`: Name of the instance referred to in the catalog command, not the instance that we are configuring
+* `admin`: When set to true specifies an administration server (tcpip only)
+* `remote`: The hostname or IP address where the database resides (tcpip only)
+* `server`: The service name or port number of the database manager instance (tcpip only)
+* `remote_instance`: Specifies the name of the server instance where the database resides (tcpip only)
+* `security`: Specifies the node will be security enabled, valid values are `socks` and `ssl` (tcpip only)
+* `system`: Specifies the DB2 system name that is used to identify the server machine
+* `ostype`: Specifies the OS type of the server machine (AIX, WIN, HPUX, SUN, OS390, OS400, VM, VSE, SNI, SCO, LINUX and DYNIX.)
+* `comment`: A description of the catalog entry
+
+The `db2_catalog_node` resource type will automatically require the corresponding `db2_instance` resource if it is in the catalog
+
+## `db2_catalog_database`
+
+The `db2_catalog_database` resource type manages catalog entries for databases on DB2 instances.
+
+### Usage example
+
+```puppet
+db2_catalog_database { 'DB2DBXX':
+  instance => 'db2inst1',
+  install_root => '/opt/ibm/db2/V11.1',
+  node    => 'MYNODE2',
+  authentication => 'dcs',
+}
+```
+
+### Parameters
+
+* `install_root`: Path to the root of the DB2 installation (required)
+* `instance`: The name of the instance to configure (required)
+* `as_alias`: The alias of the database entry.  This attribute is also the namevar, so if ommited, the resource title will be used as the alias name, this is the unique identifier for the resource
+* `db_name`: The database name to catalog, if this option is ommited then the `as_alias` (or the resource title) will be used as the database name
+* `path`: Specify the path where the database resides (cannot use with `node`)
+* `node`: Specify the name of the database partition server where the database resides (cannot use with `path`)
+* `authentication`: Specify an authentication type (SERVER, CLIENT, SERVER_ENCRYPT..etc)
+* `comment`: A description of the catalog entry
+
+### Title patterns
+
+The `as_alias` attribute is the resource type's namevar, a short hand notation also exists to map both the `as_alias` and `db_name` attributes from the title of the resource using a comma delimited string as the title.  Therefore, this example;
+
+```puppet
+db2_catalog_database { 'DB2 Database X':
+  instance => 'db2inst1',
+  install_root => '/opt/ibm/db2/V11.1',
+  as_alias  => 'DB2X',
+  db_name   => 'DB2DBFOO',
+  node    => 'MYNODE2',
+  authentication => 'dcs',
+}
+```
+
+... can be written as...
+
+```puppet
+db2_catalog_database { 'DB2X:DB2DBFOO'
+  instance => 'db2inst1',
+  install_root => '/opt/ibm/db2/V11.1',
+  node    => 'MYNODE2',
+  authentication => 'dcs',
+}
+```
+
+## `db2_catalog_dcs`
+
+The `db2_catalog_dcs` resource type manages catalog entries for database connection services (DCS) within a DB2 instance.
+
+### Usage example
+
+db2_catalog_dcs { 'DB2DB1':
+  instance => 'db2inst1',
+  install_root => '/opt/ibm/db2/V11.1',
+  target => 'dsn_db_1',
+}
+
+### Parameters
+
+* `install_root`: Path to the root of the DB2 installation (required)
+* `instance`: The name of the instance to configure (required)
+* `target`: The name of the target system to catalog
+* `ar_library`: The name of the AR library to load.  Do not specify if using DB2 Connect
+* `params`: Parameters to pass to the application requestor (AR) library
+* `comment`: A description of the catalog entry
+
+
+
 
 # Testing
 
