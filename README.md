@@ -331,7 +331,7 @@ The `db2_catalog_dcs` resource type manages catalog entries for database connect
 
 ### Usage example
 
-```
+```puppet
 db2_catalog_dcs { 'DB2DB1':
   instance     => 'db2inst1',
   install_root => '/opt/ibm/db2/V11.1',
