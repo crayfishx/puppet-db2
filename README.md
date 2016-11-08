@@ -336,7 +336,7 @@ db2_catalog_dcs { 'DB2DB1':
   install_root => '/opt/ibm/db2/V11.1',
   target => 'dsn_db_1',
 }
-
+```
 
 Would run 
 
