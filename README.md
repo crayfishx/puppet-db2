@@ -129,7 +129,7 @@ db2::install { '11.1':
 * `users_forcelocal`: Force the creation of instance and fence users to be local, true or false. (default: undef)
 * `port`: Optionally specify a port name for the instance (default: undef)
 * `catalog_databases`: A hash of [db2_catalog_database](#db2_catalog_database) resources to pass to create_resources
-* `catalog_nodes`: A hash of [db2_catalog_node](#db2_catalog_node)` resources to pass to create_resources
+* `catalog_nodes`: A hash of [db2_catalog_node](#db2_catalog_node) resources to pass to create_resources
 * `catalog_dcs`: A hash of [db2_catalog_node](#db2_catalog_node) resources to pass to create_resources
 
 
@@ -195,6 +195,13 @@ db2::instances:
 ```
 # Types and Providers
 
+Numerous native types and providers exist to manage aspects of DB2 instances, these are documented below
+
+## Limitations
+
+Currently all providers support a `create` and `destroy` method so they may be created with `ensure => present` and will be removed with `ensure => absent`.  The configurable attributes for each type (eg: auth, target, server..etc) are currently parameters in Puppet, not properties, therefore they only have an effect on resource creation.  Changing the attributes after the resource has been created will not actually change the configured state.   In order to change the configured state you need to remove them and re-create them.  Some attributes are easier than others to be able to identify change, this is functionality that will be introduced at a later date.
+
+
 ## `db2_instance`
 
 Configures a DB2 instance.   The instance user must already exist (the `db2::instance` defined type does this for you).  
@@ -228,11 +235,19 @@ The `db2_catalog_node` resource type manages the catalog entries for nodes on DB
 
 ```puppet
 db2_catalog_node { 'db2node1':
+  instance => 'db2inst1',
+  install_root => '/opt/ibm/db2/V11.1',
   type => 'tcpip',
   remote => 'db2server.example.com',
   server => 'db2srv',
   security => 'ssl',
 }
+```
+
+Would run the following
+
+```
+db2 CATALOG TCPIP NODE db2node1 REMOTE db2server.example.com SERVER db2srv SECURITY SSL
 ```
 
 ## Parameters
@@ -265,6 +280,12 @@ db2_catalog_database { 'DB2DBXX':
   node    => 'MYNODE2',
   authentication => 'dcs',
 }
+```
+
+Would run the following
+
+```
+db2 CATALOG DATABASE DB2DBXX AT NODE MYNODE2 AUTHENTICATION dcs
 ```
 
 ### Parameters
@@ -316,6 +337,13 @@ db2_catalog_dcs { 'DB2DB1':
   target => 'dsn_db_1',
 }
 
+
+Would run 
+
+```
+db2 CATALOG DCS DATABASE DB2DB1 AS dsn_db_1
+```
+
 ### Parameters
 
 * `install_root`: Path to the root of the DB2 installation (required)
@@ -324,8 +352,6 @@ db2_catalog_dcs { 'DB2DB1':
 * `ar_library`: The name of the AR library to load.  Do not specify if using DB2 Connect
 * `params`: Parameters to pass to the application requestor (AR) library
 * `comment`: A description of the catalog entry
-
-
 
 
 # Testing
