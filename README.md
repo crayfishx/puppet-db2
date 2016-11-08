@@ -130,7 +130,7 @@ db2::install { '11.1':
 * `port`: Optionally specify a port name for the instance (default: undef)
 * `catalog_databases`: A hash of [db2_catalog_database](#db2_catalog_database) resources to pass to create_resources
 * `catalog_nodes`: A hash of [db2_catalog_node](#db2_catalog_node) resources to pass to create_resources
-* `catalog_dcs`: A hash of [db2_catalog_node](#db2_catalog_node) resources to pass to create_resources
+* `catalog_dcs`: A hash of [db2_catalog_dcs](#db2_catalog_dcs) resources to pass to create_resources
 
 
 ## `db2`
