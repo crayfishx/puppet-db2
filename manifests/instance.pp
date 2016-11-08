@@ -55,8 +55,8 @@ define db2::instance (
   }
 
   $catalog_defaults = {
-    "instance"     => $instance_user,
-    "install_root" => $installation_root
+    'instance'     => $instance_user,
+    'install_root' => $installation_root
   }
 
   create_resources('db2_catalog_node', $catalog_nodes, $catalog_defaults)
