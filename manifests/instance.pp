@@ -18,6 +18,9 @@ define db2::instance (
   $port                 = undef,
   $type                 = 'ese',
   $auth                 = 'server',
+  $catalog_databases    = {},
+  $catalog_nodes        = {},
+  $catalog_dcs          = {},
 ) {
 
   if $manage_fence_user {
@@ -29,7 +32,6 @@ define db2::instance (
         home       => $fence_user_home,
         forcelocal => $users_forcelocal,
         managehome => true,
-        before     => Exec["db2::instance::${name}"],
       }
     }
   }
@@ -41,29 +43,28 @@ define db2::instance (
       home       => $instance_user_home,
       forcelocal => $users_forcelocal,
       managehome => true,
-      before     => Exec["db2::instance::${name}"],
     }
   }
 
-  if ( $fence_user )  {
-    $fence_user_flag = "-u ${fence_user}"
-  } else {
-    $fence_user_flag = ''
+  db2_instance { $instance_user:
+    install_root => $installation_root,
+    fence_user   => $fence_user,
+    port         => $port,
+    auth         => $auth,
+    type         => $type,
   }
 
-  if ( $port ) {
-    $port_flag = "-p ${port}"
-  } else {
-    $port_flag = ''
+  $catalog_defaults = {
+    'instance'     => $instance_user,
+    'install_root' => $installation_root
   }
 
+  create_resources('db2_catalog_node', $catalog_nodes, $catalog_defaults)
+  create_resources('db2_catalog_database', $catalog_databases, $catalog_defaults)
+  create_resources('db2_catalog_dcs', $catalog_dcs, $catalog_defaults)
 
-  exec { "db2::instance::${name}":
-    path    => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
-    command => "${installation_root}/instance/db2icrt -s ${type} -a ${auth} ${fence_user_flag} ${port_flag} ${instance_user}",
-    unless  => "${installation_root}/instance/db2ilist ${instance_user}",
-  }
 }
+
 
 
 

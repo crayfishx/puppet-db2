@@ -1,4 +1,20 @@
-# 1.0.1
+## 1.1.0
+
+Feature release.  This release adds several types and providers for configuring DB2 catalog entries in an instance.  Also added is a `db2_instance` type for managing DB2 instances themselves, replacing the exec resource that previously existed in the `db2::instance` defined type.
+
+New types and providers added:
+
+* `db2_instance`
+* `db2_catalog_node`
+* `db2_catalog_database`
+* `db2_catalog_dcs`
+
+See the docs for usage instructions.
+
+Reference: https://github.com/crayfishx/puppet-db2/pull/9
+
+
+### 1.0.1
 
 * Forge code quality (lint) release
 
@@ -8,7 +24,7 @@
 * DB2 runtime installations and instances now supported (see docs)
 
 
-#### 0.3.1
+### 0.3.1
 
 * Issue #1 : Add ability to specify forcelocal for user creation
 

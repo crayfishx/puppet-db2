@@ -1,18 +1,42 @@
 
+require 'puppetlabs_spec_helper/module_spec_helper'
+
 
 require 'spec_helper'
 
 describe "db2::instance" do
 
   let(:title) { 'db2inst' }
+  let(:facts) do
+    {
+    :operatingsystem => 'RedHat',
+    :osfamily => 'RedHat'
+    }
+  end
+
+  # Seem to be hitting https://github.com/rodjek/rspec-puppet/issues/256
+  # Unresolved, but this workaround seems to fix it.
+  let(:pre_condition) do
+    "User { provider => 'useradd' }"
+  end
+
+
   context "when declared with defaults" do
+  let(:facts) do
+    {
+    :operatingsystem => 'RedHat',
+    :osfamily => 'RedHat'
+    }
+  end
     let(:params) {{ :installation_root => '/opt/ibm/db2/V11.1' }}
     it do
-      is_expected.to contain_user('db2inst').that_comes_before('Exec[db2::instance::db2inst]')
+      is_expected.to contain_user('db2inst').that_comes_before('Db2_instance[db2inst]')
     end
     it do
-      is_expected.to contain_exec('db2::instance::db2inst').with(
-        :command => %r{^/opt/ibm/db2/V11.1/instance/db2icrt\W+-s\W+ese\W+-a\W+server\W+db2inst$}
+      is_expected.to contain_db2_instance('db2inst').with(
+        :type => 'ese',
+        :auth => 'server',
+        :fence_user => nil,
       )
     end
   end
@@ -22,14 +46,16 @@ describe "db2::instance" do
       :fence_user => 'db2fence'
     }}
     it do
-      is_expected.to contain_user('db2inst').that_comes_before('Exec[db2::instance::db2inst]')
+      is_expected.to contain_user('db2inst').that_comes_before('Db2_instance[db2inst]')
     end
     it do
-      is_expected.to contain_user('db2fence').that_comes_before('Exec[db2::instance::db2inst]')
+      is_expected.to contain_user('db2fence').that_comes_before('Db2_instance[db2inst]')
     end
     it do
-      is_expected.to contain_exec('db2::instance::db2inst').with(
-        :command => %r{^/opt/ibm/db2/V11.1/instance/db2icrt\W+-s\W+ese\W+-a\W+server\W+-u\W+db2fence\W+db2inst$}
+      is_expected.to contain_db2_instance('db2inst').with(
+        :type => 'ese',
+        :auth => 'server',
+        :fence_user => 'db2fence'
       )
     end
   end
@@ -70,11 +96,13 @@ describe "db2::instance" do
       is_expected.not_to contain_user('db2inst')
     end
     it do
-      is_expected.to contain_user('db2fence').that_comes_before('Exec[db2::instance::db2inst]')
+      is_expected.to contain_user('db2fence').that_comes_before('Db2_instance[db2inst]')
     end
     it do
-      is_expected.to contain_exec('db2::instance::db2inst').with(
-        :command => %r{^/opt/ibm/db2/V11.1/instance/db2icrt\W+-s\W+ese\W+-a\W+server\W+-u\W+db2fence\W+db2inst$}
+      is_expected.to contain_db2_instance('db2inst').with(
+        :type => 'ese',
+        :auth => 'server',
+        :fence_user => 'db2fence'
       )
     end
   end
@@ -89,11 +117,13 @@ describe "db2::instance" do
       is_expected.not_to contain_user('db2fence')
     end
     it do
-      is_expected.to contain_user('db2inst').that_comes_before('Exec[db2::instance::db2inst]')
+      is_expected.to contain_user('db2inst').that_comes_before('Db2_instance[db2inst]')
     end
     it do
-      is_expected.to contain_exec('db2::instance::db2inst').with(
-        :command => %r{^/opt/ibm/db2/V11.1/instance/db2icrt\W+-s\W+ese\W+-a\W+server\W+-u\W+db2fence\W+db2inst$}
+      is_expected.to contain_db2_instance('db2inst').with(
+        :type => 'ese',
+        :auth => 'server',
+        :fence_user => 'db2fence'
       )
     end
   end
@@ -106,8 +136,10 @@ describe "db2::instance" do
       :auth       => 'client'
     }}
     it do
-      is_expected.to contain_exec('db2::instance::db2inst').with(
-        :command => %r{^/opt/ibm/db2/V11.1/instance/db2icrt\W+-s\W+standalone\W+-a\W+client\W+-u\W+db2fence\W+db2inst$}
+      is_expected.to contain_db2_instance('db2inst').with(
+        :type => 'standalone',
+        :auth => 'client',
+        :fence_user => 'db2fence'
       )
     end
   end
@@ -121,8 +153,11 @@ describe "db2::instance" do
       :port       => 'db2port',
     }}
     it do
-      is_expected.to contain_exec('db2::instance::db2inst').with(
-        :command => %r{^/opt/ibm/db2/V11.1/instance/db2icrt\W+-s\W+standalone\W+-a\W+client\W+-u\W+db2fence\W+-p\W+db2port\W+db2inst$}
+      is_expected.to contain_db2_instance('db2inst').with(
+        :type => 'standalone',
+        :auth => 'client',
+        :fence_user => 'db2fence',
+        :port => 'db2port'
       )
     end
   end
