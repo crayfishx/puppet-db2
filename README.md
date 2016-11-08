@@ -211,9 +211,9 @@ Configures a DB2 instance.   The instance user must already exist (the `db2::ins
 ```puppet
 db2_instance { 'db2inst1':
   install_root => '/opt/ibm/db2/V11.1',
-  type => client,
-  fence_user => 'db2fence1',
-  auth => 'server',
+  type         => client,
+  fence_user   => 'db2fence1',
+  auth         => 'server',
 }
 ```
   
@@ -235,12 +235,12 @@ The `db2_catalog_node` resource type manages the catalog entries for nodes on DB
 
 ```puppet
 db2_catalog_node { 'db2node1':
-  instance => 'db2inst1',
+  instance     => 'db2inst1',
   install_root => '/opt/ibm/db2/V11.1',
-  type => 'tcpip',
-  remote => 'db2server.example.com',
-  server => 'db2srv',
-  security => 'ssl',
+  type         => 'tcpip',
+  remote       => 'db2server.example.com',
+  server       => 'db2srv',
+  security     => 'ssl',
 }
 ```
 
@@ -275,9 +275,9 @@ The `db2_catalog_database` resource type manages catalog entries for databases o
 
 ```puppet
 db2_catalog_database { 'DB2DBXX':
-  instance => 'db2inst1',
-  install_root => '/opt/ibm/db2/V11.1',
-  node    => 'MYNODE2',
+  instance       => 'db2inst1',
+  install_root   => '/opt/ibm/db2/V11.1',
+  node           => 'MYNODE2',
   authentication => 'dcs',
 }
 ```
@@ -305,11 +305,11 @@ The `as_alias` attribute is the resource type's namevar, a short hand notation a
 
 ```puppet
 db2_catalog_database { 'DB2 Database X':
-  instance => 'db2inst1',
-  install_root => '/opt/ibm/db2/V11.1',
-  as_alias  => 'DB2X',
-  db_name   => 'DB2DBFOO',
-  node    => 'MYNODE2',
+  instance       => 'db2inst1',
+  install_root   => '/opt/ibm/db2/V11.1',
+  as_alias       => 'DB2X',
+  db_name        => 'DB2DBFOO',
+  node           => 'MYNODE2',
   authentication => 'dcs',
 }
 ```
@@ -332,9 +332,9 @@ The `db2_catalog_dcs` resource type manages catalog entries for database connect
 ### Usage example
 
 db2_catalog_dcs { 'DB2DB1':
-  instance => 'db2inst1',
+  instance     => 'db2inst1',
   install_root => '/opt/ibm/db2/V11.1',
-  target => 'dsn_db_1',
+  target       => 'dsn_db_1',
 }
 ```
 
