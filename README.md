@@ -3,6 +3,22 @@
 Puppet DB2 module
 -----------------
 
+# Contents
+
+1. [Introduction](#introduction)
+1. [Prerequisites](#pre-requisistes)
+1. [Usage](#usage)
+  1. [Installing DB2](#db2install)
+  1. [Configuring DB2 Instances](#db2instance)
+  1. [Using Hiera to configure DB2 and instances](#db2)
+1. [Types and providers](#types-and-providers)
+  1. [db2_instance](#db2_instance)
+  1. [db2_catalog_node](#db2_catalog_node)
+  1. [db2_catalog_database](#db2_catalog_database)
+  1. [db2_catalog_dcs](#db2_catalog_dcs)
+1. [Testing](#testing)
+
+
 # Introduction 
 
 This module configures DB2 server and runtime client installations and configures instances.
