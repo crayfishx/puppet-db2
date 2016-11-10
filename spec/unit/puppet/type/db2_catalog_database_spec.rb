@@ -67,8 +67,8 @@ describe Puppet::Type.type(:db2_catalog_database) do
         let(:provider) { resource.provider }
 
         it "should execute the correct db2 commands" do
-          provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 #{scenario[:expect]}", { "DB2INSTANCE" => "db2inst" })
-          provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 terminate", { "DB2INSTANCE" => "db2inst" })
+          provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 #{scenario[:expect]}", { "DB2INSTANCE" => "db2inst" }, true)
+          provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 terminate", { "DB2INSTANCE" => "db2inst" }, true)
           provider.create
         end
       end
