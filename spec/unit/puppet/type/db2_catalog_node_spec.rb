@@ -78,8 +78,8 @@ describe Puppet::Type.type(:db2_catalog_node) do
       },
       {
         :name   => "With admin",
-        :with   => { :type => 'tcpip', :admin => true, :remote => 'db2remote', :server => 'db2server' },
-        :expect => 'CATALOG ADMIN TCPIP NODE db2node REMOTE db2remote SERVER db2server'
+        :with   => { :type => 'tcpip', :admin => true, :remote => 'db2remote' },
+        :expect => 'CATALOG ADMIN TCPIP NODE db2node REMOTE db2remote'
       },
       {
         :name   => "With security socks",
@@ -117,12 +117,6 @@ describe Puppet::Type.type(:db2_catalog_node) do
         :name   => "With a local entry using system, ostype and to_instance",
         :with   => { :type => 'local', :comment => 'test stuff', :system => 'db2sys', :ostype => 'linux', :to_instance => 'db2toinst' },
         :expect => 'CATALOG LOCAL NODE db2node INSTANCE db2toinst SYSTEM db2sys OSTYPE linux WITH "test stuff"'
-      },
-
-      {
-        :name   => "With a local admin entry",
-        :with   => { :type => 'local', :admin => true, :comment => 'test stuff', :system => 'db2sys', :ostype => 'linux', :to_instance => 'db2toinst' },
-        :expect => 'CATALOG ADMIN LOCAL NODE db2node INSTANCE db2toinst SYSTEM db2sys OSTYPE linux WITH "test stuff"'
       },
 
 
