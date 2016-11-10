@@ -12,12 +12,32 @@ Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::
   end
 
   def get_nodes
-    output = db2_exec('list node directory')
-    parse_output(output, :name, {
-      /Node name/ => :name,
-      /Comment/   => :comment,
-      /Protocol/  => :protocol
-    })
+    output_matcher = {
+      /Node name/             => :name,
+      /Comment/               => :comment,
+      /Protocol/              => :protocol,
+      /Hostname/              => :remote,
+      /Service name/          => :service,
+      /Security type/         => :security,
+      /Remote instance name/  => :remote_instance,
+      /System/                => :system,
+      /Operating system type/ => :ostype
+    }
+
+    # Get the raw output of both regular and admin nodes, there is no single
+    # command that combines these
+    #
+    output_nodes = db2_exec_nofail('list node directory show detail')
+    output_admin_nodes = db2_exec_nofail('list admin node directory show detail')
+
+    # Parse the raw output into a hash
+    nodes = parse_output(output_nodes, :name, output_matcher)
+    admin_nodes = parse_output(output_admin_nodes, :name, output_matcher)
+
+    # Set :admin => true on any admin nodes and return a merged hash of 
+    # all results
+    #
+    admin_nodes.each { |nodename, params| params[:admin] = true}.merge(nodes)
   end
 
   def create

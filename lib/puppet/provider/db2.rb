@@ -19,21 +19,29 @@ class Puppet::Provider::Db2 < Puppet::Provider
   # directory and runs it in the correct DB2 instance by setting the
   # DB2INSTANCE environment variable.
   #
-  def db2_exec(*args)
+  def db2_instance_exec(command, failonfail=true)
     envhash = { "DB2INSTANCE" => @resource[:instance]}
     rootdir = @resource[:install_root]
     executable = File.join(rootdir, 'bin', 'db2')
 
-    command = [ executable, args ].flatten.join(" ")
+    command = [ executable, command ].flatten.join(" ")
 
     self.debug("Using custom environment #{envhash}")
-    exec_db2_command(command, envhash)
+    exec_db2_command(command, envhash, failonfail)
   end
 
-  def exec_db2_command(command,envhash = {})
+  def db2_exec(*args)
+    db2_instance_exec(args.flatten.join(" "))
+  end
+
+  def db2_exec_nofail(*args)
+    db2_instance_exec(args.flatten.join(" "), false)
+  end
+
+  def exec_db2_command(command,envhash = {}, failonfail=true)
     output = Puppet::Util::Execution.execute(
       command,
-      :failonfail => true,
+      :failonfail => failonfail,
       :custom_environment => envhash
     )
   end

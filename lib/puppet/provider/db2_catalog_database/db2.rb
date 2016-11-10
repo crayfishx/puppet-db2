@@ -12,7 +12,7 @@ Puppet::Type.type(:db2_catalog_database).provide(:db2, :parent => Puppet::Provid
   end
 
   def get_databases
-    output = db2_exec('list database directory')
+    output = db2_exec_nofail('list database directory')
     parse_output(output, :as_alias, {
       /Database alias/ => :as_alias,
       /Database name/  => :db_name,
