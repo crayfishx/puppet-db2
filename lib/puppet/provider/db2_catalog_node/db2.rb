@@ -32,7 +32,7 @@ Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::
       args << 'TCPIP NODE'
       args << @resource[:name]
       args << "REMOTE #{@resource[:remote]}"
-      args << "SERVER #{@resource[:server]}"
+      args << "SERVER #{@resource[:server]}" if @resource[:server]
       args << "SECURITY #{@resource[:security].upcase}" if @resource[:security]
       args << "REMOTE_INSTANCE #{@resource[:remote_instance]}" if @resource[:remote_instance]
       args << "SYSTEM #{@resource[:system]}" if @resource[:system]

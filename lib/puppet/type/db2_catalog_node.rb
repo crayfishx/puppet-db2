@@ -54,6 +54,9 @@ Puppet::Type.newtype(:db2_catalog_node) do
 
   newparam(:server) do
     desc "Specifies the service name or port number of the database manager instance (tcpip only)"
+    validate do |value|
+      raise ArgumentError, "server cannot be specified when admin is true" if @resource[:admin] and value
+    end
   end
 
   newparam(:security) do
