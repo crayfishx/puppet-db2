@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '..', 'db2.rb')
 Puppet::Type.type(:db2_catalog_dcs).provide(:db2, :parent => Puppet::Provider::Db2) do
 
   def get_dcs
-    output = db2_exec('list dcs directory')
+    output = db2_exec_nofail('list dcs directory')
     parse_output(output, :name, {
       /Local database name/ => :name,
       /Target database name/ => :target
