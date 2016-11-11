@@ -10,7 +10,6 @@ Puppet::Type.newtype(:db2_catalog_node) do
     [
       :install_root,
       :instance,
-      :type,
     ].each do |param|
       if self[param].nil?
         raise ArgumentError, "Must supply parameter #{param}"

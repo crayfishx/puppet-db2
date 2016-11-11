@@ -10,8 +10,6 @@ Puppet::Type.newtype(:db2_instance) do
   validate do
     [
       :install_root,
-      :auth,
-      :type,
     ].each do |param|
       if self[param].nil?
         raise ArgumentError, "Must supply parameter #{param}"
