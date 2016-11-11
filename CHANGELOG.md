@@ -1,3 +1,26 @@
+## 1.2.0
+
+### Feature
+
+* Attributes for `db2_catalog_node`, `db2_catalog_database` and `db2_catalog_dcs` are now puppet properties, rather than parameters, which means Puppet will now enforce changes after creation and maintain the state of the catalog entries... eg:
+
+```
+Notice: /Stage[main]/Db2/Db2::Instance[db2test4]/Db2_catalog_node[DB2NODE1]/remote: remote changed 'db12.example.com' to 'db15.example.com'
+```
+
+This addresses the idempotency limitations of the resource types. Previously Puppet would use the attributes to create the catalog entry but if they were later changed in Puppet, it would not enforce the changes.  
+
+### Bugfixes
+
+* Bugfix: quotes for `comment` attribute and `params` attributes
+* Bugfix: renamed `PARAMS` to `PARMS` for the catalog_dcs provider
+
+### Other
+
+* Fixed some validation issues with types
+* Added more spec tests
+
+
 ### 1.1.1
 
 Bugfix release.  This release addresses issues around the types and providers for managing DB2 catalog entries.
