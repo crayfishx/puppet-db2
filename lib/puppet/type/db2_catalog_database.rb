@@ -49,28 +49,26 @@ Puppet::Type.newtype(:db2_catalog_database) do
     desc "The alias of the database to be cataloged"
   end
 
-  newparam(:db_name) do
+  newproperty(:db_name) do
     desc %q{
       The database name to catalog, if this option is ommited then the name of
       the resource title (or as_alias) will be used.
     }
   end
 
-
-
-  newparam(:path) do
+  newproperty(:path) do
     desc "Specify the drive or path where the database resides"
   end
 
-  newparam(:node) do
+  newproperty(:node) do
     desc "Specify the name of the database partition server where the database resides"
   end
 
-  newparam(:authentication) do
+  newproperty(:authentication) do
     desc "Specify an authentication type for local databases.  eg: SERVER, CLIENT, SERVER_ENCRYPT"
   end
 
-  newparam(:comment) do
+  newproperty(:comment) do
     desc "A description of the catalog entry"
   end
 

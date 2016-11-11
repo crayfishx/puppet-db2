@@ -1,10 +1,12 @@
 require File.join(File.dirname(__FILE__), '..', 'db2.rb')
 Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::Db2) do
 
+  mk_resource_methods
+
   def exists?
     nodes = get_nodes
     if nodes.has_key?(resource[:name])
-      node=nodes[resource[:name]]
+      @property_hash = nodes[resource[:name]]
       true
     else
       false
@@ -17,11 +19,12 @@ Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::
       /Comment/               => :comment,
       /Protocol/              => :protocol,
       /Hostname/              => :remote,
-      /Service name/          => :service,
+      /Service name/          => :server,
       /Security type/         => :security,
       /Remote instance name/  => :remote_instance,
       /System/                => :system,
-      /Operating system type/ => :ostype
+      /Operating system type/ => :ostype,
+      /Instance name/         => :to_instance,
     }
 
     # Get the raw output of both regular and admin nodes, there is no single
@@ -57,7 +60,7 @@ Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::
       args << "REMOTE_INSTANCE #{@resource[:remote_instance]}" if @resource[:remote_instance]
       args << "SYSTEM #{@resource[:system]}" if @resource[:system]
       args << "OSTYPE #{@resource[:ostype]}" if @resource[:ostype]
-      args << "WITH \"#{@resource[:comment]}\"" if @resource[:comment]
+      args << "WITH '\"#{@resource[:comment]}\"'" if @resource[:comment]
     when 'local'
       args << 'ADMIN' if @resource[:admin]
       args << 'LOCAL NODE'
@@ -65,7 +68,7 @@ Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::
       args << "INSTANCE #{@resource[:to_instance]}" if @resource[:to_instance]
       args << "SYSTEM #{@resource[:system]}" if @resource[:system]
       args << "OSTYPE #{@resource[:ostype]}" if @resource[:ostype]
-      args << "WITH \"#{@resource[:comment]}\"" if @resource[:comment]
+      args << "WITH '\"#{@resource[:comment]}\"'" if @resource[:comment]
     end
 
     db2_exec(args)
@@ -78,7 +81,6 @@ Puppet::Type.type(:db2_catalog_node).provide(:db2, :parent => Puppet::Provider::
     db2_exec(args)
     db2_terminate
   end
-
 end
 
 

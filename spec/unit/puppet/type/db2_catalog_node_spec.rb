@@ -11,6 +11,16 @@ describe Puppet::Type.type(:db2_catalog_node) do
         :instance,
         :install_root,
         :type,
+        :name,
+      ].each do |param|
+        it "should have a #{param} parameter" do
+          expect(described_class.attrtype(param)).to eq(:param)
+        end
+      end
+    end
+
+    context 'properties' do
+      [
         :to_instance,
         :admin,
         :remote,
@@ -21,8 +31,8 @@ describe Puppet::Type.type(:db2_catalog_node) do
         :ostype,
         :comment
       ].each do |param|
-        it "should have a #{param} parameter" do
-          expect(described_class.attrtype(param)).to eq(:param)
+        it "should have a #{param} property" do
+          expect(described_class.attrtype(param)).to eq(:property)
         end
       end
     end
@@ -53,6 +63,28 @@ describe Puppet::Type.type(:db2_catalog_node) do
           ).to raise_error(/Must supply parameter type/)
         end
       end
+      it "should not allow server when configuring an admin node" do
+        expect do
+          described_class.new(
+            :name => 'db2node',
+            :install_root => '/opt/ibm/db2/V11.1',
+            :instance => 'db2inst1',
+            :admin => true,
+            :server => '9090'
+          ).to raise_error(/server is not a valid option for an admin node/)
+        end
+      end
+      it "should not allow to_instance for a tcpip node" do
+        expect do
+          described_class.new(
+            :name => 'db2node',
+            :install_root => '/opt/ibm/db2/V11.1',
+            :instance  => 'db2inst',
+            :type  => 'tcpip',
+            :to_instance => 'foo',
+          ).to raise_error(/to_instance can only be used for local nodes/)
+        end
+      end
     end
 
     context 'when declared with minimal params' do
@@ -68,6 +100,8 @@ describe Puppet::Type.type(:db2_catalog_node) do
       end
     end
   end
+
+
 
   describe "provider" do
     scenarios = [
@@ -104,7 +138,7 @@ describe Puppet::Type.type(:db2_catalog_node) do
       {
         :name   => "With comment",
         :with   => { :type => 'tcpip', :comment => 'test stuff', :remote => 'db2remote', :server => 'db2server' },
-        :expect => 'CATALOG TCPIP NODE db2node REMOTE db2remote SERVER db2server WITH "test stuff"'
+        :expect => 'CATALOG TCPIP NODE db2node REMOTE db2remote SERVER db2server WITH \'"test stuff"\''
       },
 
       # Test LOCAL NODE
@@ -116,7 +150,7 @@ describe Puppet::Type.type(:db2_catalog_node) do
       {
         :name   => "With a local entry using system, ostype and to_instance",
         :with   => { :type => 'local', :comment => 'test stuff', :system => 'db2sys', :ostype => 'linux', :to_instance => 'db2toinst' },
-        :expect => 'CATALOG LOCAL NODE db2node INSTANCE db2toinst SYSTEM db2sys OSTYPE linux WITH "test stuff"'
+        :expect => 'CATALOG LOCAL NODE db2node INSTANCE db2toinst SYSTEM db2sys OSTYPE linux WITH \'"test stuff"\''
       },
 
 
@@ -136,6 +170,23 @@ describe Puppet::Type.type(:db2_catalog_node) do
           provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 terminate", { "DB2INSTANCE" => "db2inst" }, true)
           provider.create
         end
+      end
+    end
+
+    context "destroying" do
+      let(:resource) {
+        described_class.new(
+          :name => 'db2node1',
+          :ensure => 'absent',
+          :install_root => '/opt/ibm/db2/V11.1',
+          :instance   => 'db2inst'
+         )
+      }
+      let(:provider) { resource.provider }
+      it "should uncatalog the node" do
+        provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 UNCATALOG NODE db2node1", { "DB2INSTANCE" => "db2inst" }, true)
+        provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 terminate", { "DB2INSTANCE" => "db2inst" }, true)
+        provider.destroy
       end
     end
   end

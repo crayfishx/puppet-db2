@@ -9,14 +9,23 @@ describe Puppet::Type.type(:db2_catalog_database) do
         :instance,
         :install_root,
         :as_alias,
+      ].each do |param|
+        it "should have a #{param} parameter" do
+          expect(described_class.attrtype(param)).to eq(:param)
+        end
+      end
+    end
+
+    context 'properties' do
+      [
         :db_name,
         :path,
         :node,
         :authentication,
         :comment
       ].each do |param|
-        it "should have a #{param} parameter" do
-          expect(described_class.attrtype(param)).to eq(:param)
+        it "should have a #{param} property" do
+          expect(described_class.attrtype(param)).to eq(:property)
         end
       end
     end
@@ -54,7 +63,7 @@ describe Puppet::Type.type(:db2_catalog_database) do
       {
         :name   => "With a node",
         :with   => { :db_name => 'db2db', :as_alias => 'db2alias', :node => 'db2node', :authentication => 'SERVER', :comment => 'DB2 DB' },
-        :expect => 'CATALOG DATABASE db2db AS db2alias AT NODE db2node AUTHENTICATION SERVER WITH "DB2 DB"'
+        :expect => 'CATALOG DATABASE db2db AS db2alias AT NODE db2node AUTHENTICATION SERVER WITH \'"DB2 DB"\''
       },
     ]
     scenarios.each do |scenario|
@@ -71,6 +80,22 @@ describe Puppet::Type.type(:db2_catalog_database) do
           provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 terminate", { "DB2INSTANCE" => "db2inst" }, true)
           provider.create
         end
+      end
+    end
+    context "destroying" do
+      let(:resource) {
+        described_class.new(
+          :name => 'db2db',
+          :ensure => 'absent',
+          :install_root => '/opt/ibm/db2/V11.1',
+          :instance   => 'db2inst'
+         )
+      }
+      let(:provider) { resource.provider }
+      it "should uncatalog the node" do
+        provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 UNCATALOG DATABASE db2db", { "DB2INSTANCE" => "db2inst" }, true)
+        provider.expects(:exec_db2_command).with("/opt/ibm/db2/V11.1/bin/db2 terminate", { "DB2INSTANCE" => "db2inst" }, true)
+        provider.destroy
       end
     end
   end

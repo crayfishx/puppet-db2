@@ -2,18 +2,6 @@ require 'puppet/provider'
 
 class Puppet::Provider::Db2 < Puppet::Provider
 
-  attr_reader :node
-  attr_reader :database
-  attr_reader :dcs
-
-  def initialize(*args)
-    @node = {}
-    @database = {}
-    @dcs = {}
-    super
-  end
-
-
   # db2_exec.
   # This method calls the db2 command located under the install_root
   # directory and runs it in the correct DB2 instance by setting the
@@ -51,6 +39,15 @@ class Puppet::Provider::Db2 < Puppet::Provider
   #
   def db2_terminate
     db2_exec('terminate')
+  end
+
+  # The flush method will be called if any properties are identified as changed.
+  # DB2 doesn't support any method for modifying an existing catalog entry so
+  # we need to uncatalog and re-create the entry
+  #
+  def flush
+    destroy
+    create
   end
 
   # Generic handler to parse the output from db2 list * directory commands.

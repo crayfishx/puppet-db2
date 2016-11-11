@@ -32,19 +32,22 @@ Puppet::Type.newtype(:db2_catalog_dcs) do
     desc "The path to the root of the DB2 installation"
   end
 
-  newparam(:target) do
+  newproperty(:target) do
     desc "Specifies the name of the target system to catalog"
+    munge do |value|
+      value.upcase
+    end
   end
 
-  newparam(:ar_library) do
+  newproperty(:ar_library) do
     desc "The name of the AR library to load.  Do not specify if using DB2 Connect"
   end
 
-  newparam(:params) do
+  newproperty(:params) do
     desc "Parameters to pass to the application requestor (AR) library"
   end
 
-  newparam(:comment) do
+  newproperty(:comment) do
     desc "A description of the catalog entry"
   end
 
