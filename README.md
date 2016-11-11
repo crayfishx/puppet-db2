@@ -197,11 +197,6 @@ db2::instances:
 
 Numerous native types and providers exist to manage aspects of DB2 instances, these are documented below
 
-## Limitations
-
-Currently all providers support a `create` and `destroy` method so they may be created with `ensure => present` and will be removed with `ensure => absent`.  The configurable attributes for each type (eg: auth, target, server..etc) are currently parameters in Puppet, not properties, therefore they only have an effect on resource creation.  Changing the attributes after the resource has been created will not actually change the configured state.   In order to change the configured state you need to remove them and re-create them.  Some attributes are easier than others to be able to identify change, this is functionality that will be introduced at a later date.
-
-
 ## `db2_instance`
 
 Configures a DB2 instance.   The instance user must already exist (the `db2::instance` defined type does this for you).  

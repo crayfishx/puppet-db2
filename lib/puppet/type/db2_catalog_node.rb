@@ -15,6 +15,14 @@ Puppet::Type.newtype(:db2_catalog_node) do
         raise ArgumentError, "Must supply parameter #{param}"
       end
     end
+
+    if self[:to_instance] and self[:type] != 'local'
+      raise ArgumentError, 'to_instance can only be used for local nodes'
+    end
+
+    if self[:admin] and self[:server]
+      raise ArgumentError, 'server is not a valid option for an admin node'
+    end
   end
 
   ensurable do
@@ -28,10 +36,6 @@ Puppet::Type.newtype(:db2_catalog_node) do
     desc "Specifies the DB2 instance to use, the username must match the instance name"
   end
 
-  newparam(:to_instance) do
-    desc "Name of the instance referred to in the catalog command, not the instance that we are configuring"
-  end
-
   newparam(:install_root) do
     desc "The path to the root of the DB2 installation"
   end
@@ -43,41 +47,42 @@ Puppet::Type.newtype(:db2_catalog_node) do
     end
   end
 
-  newparam(:admin, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+  newproperty(:to_instance) do
+    desc "Name of the instance referred to in the catalog command, not the instance that we are configuring (local only)"
+  end
+
+  newproperty(:admin, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc "When set to true specifies an administration server (tcpip only)"
   end
 
-  newparam(:remote) do
+  newproperty(:remote) do
     desc "The hostname or IP address where the database resides (tcpip only)"
   end
 
-  newparam(:server) do
+  newproperty(:server) do
     desc "Specifies the service name or port number of the database manager instance (tcpip only)"
-    validate do |value|
-      raise ArgumentError, "server cannot be specified when admin is true" if @resource[:admin] and value
-    end
   end
 
-  newparam(:security) do
+  newproperty(:security) do
     desc "Specifies the node will be security enabled, valid values are ssl, ns and server"
     munge do |value|
       value.downcase
     end
   end
 
-  newparam(:remote_instance) do
+  newproperty(:remote_instance) do
     desc "Specifies the name of the server instance where the database resides"
   end
 
-  newparam(:system) do
+  newproperty(:system) do
     desc "Specifies the DB2 system name that is used to identify the server machine"
   end
 
-  newparam(:ostype) do
+  newproperty(:ostype) do
     desc "Specifies the operating system of the server"
   end
 
-  newparam(:comment) do
+  newproperty(:comment) do
     desc "A description of the catalog entry"
   end
 
