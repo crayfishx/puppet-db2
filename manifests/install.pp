@@ -19,6 +19,11 @@ define db2::install (
   $license_source    = undef,
 ) {
 
+  # db2 class must be included before db2::install
+  if !defined(Class['::db2']) {
+    fail('The baseclass db2 must be included before declaring db2::install')
+  }
+
   # Set up file locations
 
   # Based on the product we try and set some sensible defaults for 
