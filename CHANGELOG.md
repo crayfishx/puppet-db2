@@ -1,3 +1,7 @@
+### 1.2.1
+
+* Bumped dependency version for puppet/archive to < 2.0.0
+
 ## 1.2.0
 
 ### Feature
