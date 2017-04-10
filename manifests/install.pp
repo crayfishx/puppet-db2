@@ -97,9 +97,24 @@ define db2::install (
       source       => $source,
       extract_path => $installer_root,
       before       => Exec["db2::install::${name}"],
+      creates      => $p_install_dest, # this prevents us using cleanup => true
+    }
+
+    # Cleanup after installation is finished
+    file { "Remove ${binpath}":
+        ensure  => absent,
+        path    => $binpath,
+        recurse => true,
+        purge   => true,
+        force   => true, # remove also directories
+        require => Exec["db2::install::${name}"],
+    }
+    file { "Remove ${installer_root}/${p_filename}":
+        ensure  => absent,
+        path    => "${installer_root}/${p_filename}",
+        require => Exec["db2::install::${name}"],
     }
   }
-
 
   file { $responsefile:
     ensure  => file,
