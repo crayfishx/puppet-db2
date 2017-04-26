@@ -203,6 +203,15 @@ describe 'db2::install' do
       it do 
         is_expected.not_to contain_archive('/var/puppet_db2/db2.tar.gz')
       end
+
+      it do
+        is_expected.not_to contain_file('/var/puppet_db2/db2.tar.gz')
+      end
+
+      it do
+        is_expected.not_to contain_file('/var/puppet_db2/universal')
+      end
+
     end
   end
 
