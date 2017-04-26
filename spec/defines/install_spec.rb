@@ -18,12 +18,112 @@ describe 'db2::install' do
         is_expected.to contain_archive('/var/puppet_db2/v11.1_linux64_expc.tar.gz').with(
           :extract => true,
           :source  => 'http://foo/v11.1_linux64_expc.tar.gz',
-          :extract_path => '/var/puppet_db2'
+          :extract_path => '/var/puppet_db2',
+          :creates => '/opt/ibm/db2/V11.1'
         ).that_comes_before('Exec[db2::install::11.1]')
       end
 
       it do
         is_expected.to contain_file('/var/puppet_db2/11.1.rsp')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/universal').with(
+          :ensure => :absent,
+          :purge => :true,
+          :force => :true
+        ).that_requires('Exec[db2::install::11.1]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/v11.1_linux64_expc.tar.gz').with(
+          :ensure => :absent
+        ).that_requires('Exec[db2::install::11.1]')
+      end
+    end
+    context "when configuring a different version with title" do
+      let(:title) { '12.1' }
+      let(:params) {{
+        :configure_license => false,
+        :source            => 'http://foo/v12.1_linux64_expc.tar.gz',
+      }}
+    
+      it do 
+        is_expected.to contain_archive('/var/puppet_db2/v12.1_linux64_expc.tar.gz').with(
+          :extract => true,
+          :source  => 'http://foo/v12.1_linux64_expc.tar.gz',
+          :extract_path => '/var/puppet_db2',
+          :creates => '/opt/ibm/db2/V12.1'
+        ).that_comes_before('Exec[db2::install::12.1]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/12.1.rsp')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/universal').with(
+          :ensure => :absent,
+          :purge => :true,
+          :force => :true
+        ).that_requires('Exec[db2::install::12.1]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/v12.1_linux64_expc.tar.gz').with(
+          :ensure => :absent
+        ).that_requires('Exec[db2::install::12.1]')
+      end
+    end
+    context "when configuring a different version with the version parameter" do
+      let(:title) { 'db2_install' }
+      let(:params) {{
+        :configure_license => false,
+        :source            => 'http://foo/v12.1_linux64_expc.tar.gz',
+        :version           => '12.1',
+      }}
+    
+      it do 
+        is_expected.to contain_archive('/var/puppet_db2/v12.1_linux64_expc.tar.gz').with(
+          :extract => true,
+          :source  => 'http://foo/v12.1_linux64_expc.tar.gz',
+          :extract_path => '/var/puppet_db2',
+          :creates => '/opt/ibm/db2/V12.1'
+        ).that_comes_before('Exec[db2::install::db2_install]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/db2_install.rsp')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/universal').with(
+          :ensure => :absent,
+          :purge => :true,
+          :force => :true
+        ).that_requires('Exec[db2::install::db2_install]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/v12.1_linux64_expc.tar.gz').with(
+          :ensure => :absent
+        ).that_requires('Exec[db2::install::db2_install]')
+      end
+    end
+    context "when extracting tarball with a custom installer folder" do
+      let(:title) { '11.1' }
+      let(:params) {{
+        :configure_license => false,
+        :source            => 'http://foo/v11.1_linux64_expc.tar.gz',
+        :installer_folder  => 'server_t'
+      }}
+    
+      it do
+        is_expected.to contain_file('/var/puppet_db2/server_t').with(
+          :ensure => :absent,
+          :purge => :true,
+          :force => :true
+        ).that_requires('Exec[db2::install::11.1]')
       end
     end
     context "when extracting tarball to a custom filename" do
@@ -38,10 +138,25 @@ describe 'db2::install' do
         is_expected.to contain_archive('/var/puppet_db2/db2.tar.gz').with(
           :extract => true,
           :source  => 'http://foo/v11.1_linux64_expc.tar.gz',
-          :extract_path => '/var/puppet_db2'
+          :extract_path => '/var/puppet_db2',
+          :creates => '/opt/ibm/db2/V11.1'
         ).that_comes_before('Exec[db2::install::11.1]')
       end
+      it do
+        is_expected.to contain_file('/var/puppet_db2/universal').with(
+          :ensure => :absent,
+          :purge => :true,
+          :force => :true
+        ).that_requires('Exec[db2::install::11.1]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/puppet_db2/db2.tar.gz').with(
+          :ensure => :absent
+        ).that_requires('Exec[db2::install::11.1]')
+      end
     end
+
     context "when extracting tarball to a custom installer root" do
       let(:title) { '11.1' }
       let(:params) {{
@@ -55,12 +170,26 @@ describe 'db2::install' do
         is_expected.to contain_archive('/var/installers/db2/db2.tar.gz').with(
           :extract => true,
           :source  => 'http://foo/v11.1_linux64_expc.tar.gz',
-          :extract_path => '/var/installers/db2'
+          :extract_path => '/var/installers/db2',
+          :creates => '/opt/ibm/db2/V11.1'
         ).that_comes_before('Exec[db2::install::11.1]')
       end
 
       it do
         is_expected.to contain_file('/var/installers/db2/11.1.rsp')
+      end
+      it do
+        is_expected.to contain_file('/var/installers/db2/universal').with(
+          :ensure => :absent,
+          :purge => :true,
+          :force => :true
+        ).that_requires('Exec[db2::install::11.1]')
+      end
+
+      it do
+        is_expected.to contain_file('/var/installers/db2/db2.tar.gz').with(
+          :ensure => :absent
+        ).that_requires('Exec[db2::install::11.1]')
       end
     end
     context "when extract is set to false" do
@@ -74,6 +203,15 @@ describe 'db2::install' do
       it do 
         is_expected.not_to contain_archive('/var/puppet_db2/db2.tar.gz')
       end
+
+      it do
+        is_expected.not_to contain_file('/var/puppet_db2/db2.tar.gz')
+      end
+
+      it do
+        is_expected.not_to contain_file('/var/puppet_db2/universal')
+      end
+
     end
   end
 
