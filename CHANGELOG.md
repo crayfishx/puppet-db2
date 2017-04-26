@@ -1,3 +1,10 @@
+
+## 1.3.0
+
+### Internal feature
+
+* Better handling of archive clean up to stop the module leaving large installer files on the system: https://github.com/crayfishx/puppet-db2/pull/21
+
 ### 1.2.1
 
 * Bumped dependency version for puppet/archive to < 2.0.0
