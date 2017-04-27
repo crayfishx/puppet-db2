@@ -106,10 +106,12 @@ define db2::install (
         recurse => true,
         purge   => true,
         force   => true, # remove also directories
+        backup  => false,
         require => Exec["db2::install::${name}"],
     }
     file { "${installer_root}/${p_filename}":
         ensure  => absent,
+        backup  => false,
         require => Exec["db2::install::${name}"],
     }
   }
