@@ -1,4 +1,8 @@
 
+### 1.3.1
+
+* #21 introduced a feature to remove the large archive files after installation, but Puppet continues to archive these by default in the client_bucket - this fix adds `backup => false` to those file resources to prevent this from happening.  https://github.com/crayfishx/puppet-db2/pull/23
+
 ## 1.3.0
 
 ### Internal feature
