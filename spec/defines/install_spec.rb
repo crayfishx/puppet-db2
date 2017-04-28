@@ -30,6 +30,7 @@ describe 'db2::install' do
       it do
         is_expected.to contain_file('/var/puppet_db2/universal').with(
           :ensure => :absent,
+          :backup => :false,
           :purge => :true,
           :force => :true
         ).that_requires('Exec[db2::install::11.1]')
@@ -37,7 +38,8 @@ describe 'db2::install' do
 
       it do
         is_expected.to contain_file('/var/puppet_db2/v11.1_linux64_expc.tar.gz').with(
-          :ensure => :absent
+          :ensure => :absent,
+          :backup => :false
         ).that_requires('Exec[db2::install::11.1]')
       end
     end
@@ -64,6 +66,7 @@ describe 'db2::install' do
       it do
         is_expected.to contain_file('/var/puppet_db2/universal').with(
           :ensure => :absent,
+          :backup => :false,
           :purge => :true,
           :force => :true
         ).that_requires('Exec[db2::install::12.1]')
@@ -71,7 +74,8 @@ describe 'db2::install' do
 
       it do
         is_expected.to contain_file('/var/puppet_db2/v12.1_linux64_expc.tar.gz').with(
-          :ensure => :absent
+          :ensure => :absent,
+          :backup => :false
         ).that_requires('Exec[db2::install::12.1]')
       end
     end
@@ -99,6 +103,7 @@ describe 'db2::install' do
       it do
         is_expected.to contain_file('/var/puppet_db2/universal').with(
           :ensure => :absent,
+          :backup => false,
           :purge => :true,
           :force => :true
         ).that_requires('Exec[db2::install::db2_install]')
@@ -106,7 +111,8 @@ describe 'db2::install' do
 
       it do
         is_expected.to contain_file('/var/puppet_db2/v12.1_linux64_expc.tar.gz').with(
-          :ensure => :absent
+          :ensure => :absent,
+          :backup => false
         ).that_requires('Exec[db2::install::db2_install]')
       end
     end
@@ -122,6 +128,7 @@ describe 'db2::install' do
         is_expected.to contain_file('/var/puppet_db2/server_t').with(
           :ensure => :absent,
           :purge => :true,
+          :backup => :false,
           :force => :true
         ).that_requires('Exec[db2::install::11.1]')
       end
@@ -146,13 +153,15 @@ describe 'db2::install' do
         is_expected.to contain_file('/var/puppet_db2/universal').with(
           :ensure => :absent,
           :purge => :true,
-          :force => :true
+          :force => :true,
+          :backup => :false,
         ).that_requires('Exec[db2::install::11.1]')
       end
 
       it do
         is_expected.to contain_file('/var/puppet_db2/db2.tar.gz').with(
-          :ensure => :absent
+          :ensure => :absent,
+          :backup => false,
         ).that_requires('Exec[db2::install::11.1]')
       end
     end
