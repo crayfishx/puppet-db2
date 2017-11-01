@@ -125,6 +125,8 @@ db2::install { '11.1':
 * `instance_user_gid`: GID of the instance user 
 * `instance_user_home`: Home directory of the instance user
 * `manage_service`: Whether or not to manage the service for the instance (default: false)
+* `service_enable`: If the service is managed, whether or not it should be registered for startup on server start (default: true)
+* `service_ensure`: If the service is managed, whether or not puppet should make sure it is running (default: undef)
 * `type`: Type of product this instance is for (default: ese)
 * `auth`: Type of auth for this instance (default: server)
 * `users_forcelocal`: Force the creation of instance and fence users to be local, true or false. (default: undef)
