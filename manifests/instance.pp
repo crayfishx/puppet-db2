@@ -9,6 +9,8 @@ define db2::instance (
   $manage_fence_user    = true,
   $manage_instance_user = true,
   $manage_service       = false,
+  $service_ensure       = undef,
+  $service_enable       = true,
   $fence_user_uid       = undef,
   $fence_user_gid       = undef,
   $fence_user_home      = undef,
@@ -64,13 +66,13 @@ define db2::instance (
     }
 
     service{$instance_service:
-      ensure    => 'running',
-      enable    => true,
+      ensure    => $service_ensure,
+      enable    => $service_enable,
       subscribe => [
         Exec['db2_systemd_daemon_reload'],
         Db2_instance[$instance_user],
       ],
-      require => [
+      require   => [
         Db2_catalog_node[keys($catalog_nodes)],
         Db2_catalog_database[keys($catalog_databases)],
         Db2_catalog_dcs[keys($catalog_dcs)],
