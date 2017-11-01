@@ -1,0 +1,23 @@
+[Unit]
+ Description=DB2 Database Instance <%= @name %>
+ After=network.target
+
+[Service]
+ Type=forking
+ User=<%= @instance_user_uid || @instance_user %>
+<%- if @instance_user_gid -%>
+ Group=<%= @instance_user_gid %>
+<%- end -%>
+ StandardOutput=syslog
+ StandardError=syslog
+ SyslogIdentifier=db2
+ ExecStart=<%= File.join(@instance_user_home, 'sqllib/adm/db2start') %>
+ ExecStop=<%= File.join(@instance_user_home, 'sqllib/adm/db2stop') %>
+ Environment="DB2INSTANCE=<%= @name %>"
+ Environment="DB2LIB=<%= File.join(@instance_user_home, 'sqllib/lib') %>"
+ Environment="DB2_HOME=<%= File.join(@instance_user_home, 'sqllib') %>"
+ Restart=always
+
+[Install]
+ WantedBy=multi-user.target
+
