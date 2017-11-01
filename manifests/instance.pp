@@ -69,6 +69,8 @@ define db2::instance (
       subscribe => [
         Exec['db2_systemd_daemon_reload'],
         Db2_instance[$instance_user],
+      ],
+      require => [
         Db2_catalog_node[keys($catalog_nodes)],
         Db2_catalog_database[keys($catalog_databases)],
         Db2_catalog_dcs[keys($catalog_dcs)],
