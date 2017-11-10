@@ -14,6 +14,7 @@ define db2::instance (
   $instance_user_uid    = undef,
   $instance_user_gid    = undef,
   $instance_user_home   = undef,
+  $groups               = undef,
   $users_forcelocal     = undef,
   $port                 = undef,
   $type                 = 'ese',
@@ -32,6 +33,7 @@ define db2::instance (
         home       => $fence_user_home,
         forcelocal => $users_forcelocal,
         managehome => true,
+        groups     => $groups,
       }
     }
   }
@@ -43,6 +45,7 @@ define db2::instance (
       home       => $instance_user_home,
       forcelocal => $users_forcelocal,
       managehome => true,
+      groups     => $groups,
     }
   }
 

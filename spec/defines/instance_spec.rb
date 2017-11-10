@@ -69,12 +69,14 @@ describe "db2::instance" do
       :fence_user_uid => '1002',
       :fence_user_gid => 'db2fencg',
       :fence_user_home => '/db2/fence',
+      :groups => 'db2group',
     }}
     it do
       is_expected.to contain_user('db2inst').with(
         :uid => '1001',
         :gid => 'db2instg',
-        :home => '/db2/inst'
+        :home => '/db2/inst',
+        :groups => 'db2group',
       )
     end
     it do
@@ -82,6 +84,7 @@ describe "db2::instance" do
         :uid => '1002',
         :gid => 'db2fencg',
         :home => '/db2/fence',
+        :groups => 'db2group',
       )
     end
   end
