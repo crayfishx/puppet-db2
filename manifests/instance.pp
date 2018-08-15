@@ -36,6 +36,13 @@ define db2::instance (
         groups     => $groups,
       }
     }
+    if $groups {
+      $groups.each |$group| {
+        Group <| title == $group |> {
+          members +> $fence_user,
+        }
+      }
+    }
   }
   if $manage_instance_user {
     user { $instance_user:
@@ -46,6 +53,13 @@ define db2::instance (
       forcelocal => $users_forcelocal,
       managehome => true,
       groups     => $groups,
+    }
+    if $groups {
+      $groups.each |$group| {
+        Group <| title == $group |> {
+          members +> $instance_user,
+        }
+      }
     }
   }
 
