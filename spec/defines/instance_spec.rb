@@ -41,7 +41,7 @@ describe "db2::instance" do
     end
   end
   context "when declared with fence user" do
-    let(:params) {{ 
+    let(:params) {{
       :installation_root => '/opt/ibm/db2/V11.1',
       :fence_user => 'db2fence'
     }}
@@ -60,7 +60,7 @@ describe "db2::instance" do
     end
   end
   context "when declaring user attributes" do
-    let(:params) {{ 
+    let(:params) {{
       :installation_root => '/opt/ibm/db2/V11.1',
       :fence_user => 'db2fence',
       :instance_user_uid => '1001',
@@ -90,7 +90,7 @@ describe "db2::instance" do
   end
 
   context "when declaring with manage_instance_user falsified" do
-    let(:params) {{ 
+    let(:params) {{
       :installation_root => '/opt/ibm/db2/V11.1',
       :fence_user => 'db2fence',
       :manage_instance_user => false,
@@ -111,7 +111,7 @@ describe "db2::instance" do
   end
 
   context "when declaring with manage_fence_user falsified" do
-    let(:params) {{ 
+    let(:params) {{
       :installation_root => '/opt/ibm/db2/V11.1',
       :fence_user => 'db2fence',
       :manage_fence_user => false,
@@ -132,7 +132,7 @@ describe "db2::instance" do
   end
 
   context "when setting the installation type and auth options" do
-    let(:params) {{ 
+    let(:params) {{
       :installation_root => '/opt/ibm/db2/V11.1',
       :fence_user => 'db2fence',
       :type       => 'standalone',
@@ -148,7 +148,7 @@ describe "db2::instance" do
   end
 
   context "when setting the port option" do
-    let(:params) {{ 
+    let(:params) {{
       :installation_root => '/opt/ibm/db2/V11.1',
       :fence_user => 'db2fence',
       :type       => 'standalone',
@@ -165,11 +165,37 @@ describe "db2::instance" do
     end
   end
 
-      
-    
+  context "when the group is not defined" do
+    let(:params) {{
+      :installation_root => '/opt/ibm/db2/V11.1',
+      :fence_user => 'db2fence',
+      :manage_fence_user => true,
+      :instance_user => 'db2inst',
+      :manage_instance_user => true,
+      :groups => ['db2group'],
+    }}
+    it do
+      is_expected.to_not contain_group('db2group').with(
+        :members => ['bob', 'db2fence', 'db2inst'],
+      )
+    end
+  end
 
+  context "when the group is already defined" do
+    let(:pre_condition) {"group {'db2group': members => ['bob']}"}
+    let(:params) {{
+      :installation_root => '/opt/ibm/db2/V11.1',
+      :fence_user => 'db2fence',
+      :manage_fence_user => true,
+      :instance_user => 'db2inst',
+      :manage_instance_user => true,
+      :groups => ['db2group'],
+    }}
+    it do
+      is_expected.to contain_group('db2group').with(
+        :members => ['bob', 'db2fence', 'db2inst'],
+      )
+    end
+  end
 
 end
-
-
-
