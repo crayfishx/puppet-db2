@@ -124,6 +124,7 @@ db2::install { '11.1':
 * `instance_user_uid`: UID of the instance user
 * `instance_user_gid`: GID of the instance user 
 * `instance_user_home`: Home directory of the instance user
+* `groups`: An array of supplementary groups for instance and fence users (optional, default: undef)
 * `type`: Type of product this instance is for (default: ese)
 * `auth`: Type of auth for this instance (default: server)
 * `users_forcelocal`: Force the creation of instance and fence users to be local, true or false. (default: undef)
