@@ -66,7 +66,7 @@ Puppet::Type.newtype(:db2_catalog_node) do
   newproperty(:security) do
     desc "Specifies the node will be security enabled, valid values are ssl, ns and server"
     munge do |value|
-      value.downcase
+      value.upcase
     end
   end
 
