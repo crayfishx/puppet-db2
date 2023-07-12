@@ -8,7 +8,7 @@ define db2::install (
   $extract = true,
   $source  = undef,
   $filename = undef,
-  $installer_root    = $::db2::workspace,
+  Stdlib::Absolutepath $installer_root = $::db2::workspace,
   $installer_folder  = undef,
   $install_dest      = undef,
   $product           = 'DB2_SERVER_EDITION',
@@ -67,14 +67,6 @@ define db2::install (
   # The response file is used by db2setup to determine the type
   # of installation
   $responsefile="${installer_root}/${name}.rsp"
-
-
-  # Validate paths and filenames
-  #
-  validate_absolute_path($installer_root)
-  validate_absolute_path($binpath)
-  validate_absolute_path($responsefile)
-
 
   # Extraction of tarball, if $extract is true
   #
